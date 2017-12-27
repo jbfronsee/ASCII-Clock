@@ -1,13 +1,70 @@
 #include "frame.hpp"
+#include <ncurses.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-const std::string DEFNAME = "numbers.txt";
+const char Clock::ASCII_DIGITS[][DEF_DROW][DEF_DCOL] = {{{' ', '_', ' '},
+                                                         {'|', ' ', '|'},
+                                                         {'|', '_', '|'}},
+                                        
+                                                        {{' ', ' ', ' '},
+                                                         {' ', ' ', '|'},
+                                                         {' ', ' ', '|'}},
+                                          
+                                                        {{' ', '_', ' '},
+                                                         {' ', '_', '|'},    
+                                                         {'|', '_', ' '}},
+                                          
+                                                        {{' ', '_', ' '},
+                                                         {' ', '_', '|'},
+                                                         {' ', '_', '|'}},
+                                          
+                                                        {{' ', ' ', ' '},
+                                                         {'|', '_', '|'},
+                                                         {' ', ' ', '|'}},
+                                          
+                                                        {{' ', '_', ' '},
+                                                         {'|', '_', ' '},
+                                                         {' ', '_', '|'}},
+                                          
+                                                        {{' ', '_', ' '},
+                                                         {'|', '_', ' '},
+                                                         {'|', '_', '|'}},
+                                          
+                                                        {{' ', '_', ' '},
+                                                         {' ', ' ', '|'},
+                                                         {' ', ' ', '|'}},
+                                          
+                                                        {{' ', '_', ' '},
+                                                         {'|', '_', '|'},
+                                                         {'|', '_', '|'}},
+                                          
+                                                        {{' ', '_', ' '},
+                                                         {'|', '_', '|'},
+                                                         {' ', ' ', '|'}}};
 
 Clock::Clock()
-{ 
-    // Open file
+{
+    drow = DEF_DROW;
+    dcol = DEF_DCOL;
+
+    // Initialize array of digits.
+    for(int i = 0; i < NUMDIG; i++)
+    {
+        digits[i] = new char*[drow];
+        for(int j = 0; j < drow; j++)
+        {
+            digits[i][j] = new char[dcol];
+            for(int k = 0; k < dcol; k++)
+            {
+                digits[i][j][k] = ASCII_DIGITS[i][j][k];
+            }
+        }
+    }
+
+
+/*    // Open file
     std::ifstream inFile(DEFNAME);
     if(!inFile.is_open())
     {
@@ -15,10 +72,10 @@ Clock::Clock()
         std::exit(1);
     }
     std::string header;
-    
+
     std::getline(inFile, header);
     std::stringstream headStream(header);
-    
+
     // Store header info.
     char delim;
 
@@ -49,7 +106,7 @@ Clock::Clock()
             digits[i][j] = new char[dcol];
         }
     }
-   
+
     int eNum = 0, row = 0, col = 0; 
 
     // Read each line and process input.
@@ -59,7 +116,7 @@ Clock::Clock()
     {
         std::stringstream strStream(line);
         std::string elem;
-        
+
         // Process each digit in the row.
         eNum = 0;
         while(std::getline(strStream,elem,delim))
@@ -75,7 +132,7 @@ Clock::Clock()
 
         row++;
     }
-
+*/
     separator = new char[3];
     separator[0] = ' ', separator[1] = '.', separator[2] = '.';
 }
@@ -86,7 +143,7 @@ Clock::~Clock()
     {
         for(int j = 0; j < drow; j++)
         {
-           delete[] digits[i][j];
+            delete[] digits[i][j];
         }
 
         delete[] digits[i];
@@ -97,28 +154,28 @@ Clock::~Clock()
 
 void Clock::updateTime()
 {
-   time_t t = std::time(0);
-   currTime = std::localtime(&t);
+    time_t t = std::time(0);
+    currTime = std::localtime(&t);
 }
 
 void Clock::printTime()
 {
     /*for(int i = 0; i < NUMDIG; i++)
-    {
-        for(int j = 0; j < drow; j++)
-        {
-            for(int k = 0; k < dcol; k++)
-            {
-                std::cout << digits[i][j][k];
-            }
-            std::cout << std::endl;
-        }
+      {
+      for(int j = 0; j < drow; j++)
+      {
+      for(int k = 0; k < dcol; k++)
+      {
+      std::cout << digits[i][j][k];
+      }
+      std::cout << std::endl;
+      }
 
-        std::cout << std::endl << std::endl;
-    }*/
+      std::cout << std::endl << std::endl;
+      }*/
 
     updateTime();
-   
+
     // Reformat time.
     int hour;
     if(currTime->tm_hour > 12)
@@ -159,32 +216,37 @@ void Clock::printTime()
         {
             for(int col = 0; col < dcol; col++)
             {
-                std::cout << digits[1][row][col];
+                char dstr[2] = {digits[1][row][col], '\0'};
+                printw(dstr);
             }
 
-            std::cout << " ";
+            printw(" ");
         }
 
         for(int col = 0; col < dcol; col++)
         {
-            std::cout << digits[hour][row][col];
+            char dstr[2] = {digits[hour][row][col], '\0'};
+            printw(dstr);
         }
 
-        std::cout << separator[row];
+        char sstr[2] = {separator[row], '\0'};
+        printw(sstr);
 
         for(int col = 0; col < dcol; col++)
         {
-            std::cout << digits[mMSB][row][col];
+            char dstr[2] = {digits[mMSB][row][col], '\0'};
+            printw(dstr);
         }
 
-        std::cout << " ";
+        printw(" ");
 
         for(int col = 0; col < dcol; col++)
         {
-            std::cout << digits[mLSB][row][col];
+            char dstr[2] = {digits[mLSB][row][col], '\0'};
+            printw(dstr);
         }
 
-        std::cout << std::endl;
+        printw("\n");
     }
 
 }
