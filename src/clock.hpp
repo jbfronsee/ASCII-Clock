@@ -2,6 +2,7 @@
 #define CLOCK_H
 
 #include <ncurses.h>
+#include <string>
 #include "frame.hpp"
 
 /**
@@ -15,17 +16,29 @@ class Clock
         char** outer;
         Frame inner;
 
+        /**
+         * Helper function to call default constructor.
+         */
+        void constructDefault();
+    
     public:
-        static const size_t FRAME1H = 5;
-        static const size_t FRAME1W = 19;
-        static const char FRAME1[FRAME1H][FRAME1W + 1];
-        static const size_t FRAME1YSTART = 1;
-        static const size_t FRAME1XSTART = 3;
+        static const size_t DEFAULT_H = 5;
+        static const size_t DEFAULT_W = 19;
+        static const char DEFAULT[DEFAULT_H][DEFAULT_W + 1];
+        static const size_t DEFAULT_YSTART = 1;
+        static const size_t DEFAULT_XSTART = 3;
 
         /**
          * Constructor uses default frame.
          */
         Clock();
+
+        /**
+         * Read the clock contents from a file.
+         * 
+         * @param filename - The name of the file to read from.
+         */
+        Clock(std::string& filename);
 
         /**
          * Copy constructor.
