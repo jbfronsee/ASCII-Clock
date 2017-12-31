@@ -1,60 +1,60 @@
 #include "digit.hpp"
 #include <ncurses.h>
 
-const char Digit::ASCII_ZERO[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                              {'|', ' ', '|'},
-                                              {'|', '_', '|'}};
+const char Digit::ASCII_ZERO[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                      "| |",
+                                                      "|_|"};
                                         
-const char Digit::ASCII_ONE[DEF_ROW][DEF_COL] = {{' ', ' ', ' '},
-                                             {' ', ' ', '|'},
-                                             {' ', ' ', '|'}};
+const char Digit::ASCII_ONE[DEF_ROW][DEF_COL + 1] = {"   ",
+                                                     "  |",
+                                                     "  |"};
                                           
-const char Digit::ASCII_TWO[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                             {' ', '_', '|'},    
-                                             {'|', '_', ' '}};
+const char Digit::ASCII_TWO[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                     " _|",    
+                                                     "|_ "};
                                           
-const char Digit::ASCII_THREE[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                               {' ', '_', '|'},
-                                               {' ', '_', '|'}};
+const char Digit::ASCII_THREE[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                       " _|",
+                                                       " _|"};
                                           
-const char Digit::ASCII_FOUR[DEF_ROW][DEF_COL] = {{' ', ' ', ' '},
-                                                    {'|', '_', '|'},
-                                                    {' ', ' ', '|'}};
+const char Digit::ASCII_FOUR[DEF_ROW][DEF_COL + 1] = {"   ",
+                                                      "|_|",
+                                                      "  |"};
                                           
-const char Digit::ASCII_FIVE[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                                    {'|', '_', ' '},
-                                                    {' ', '_', '|'}};
+const char Digit::ASCII_FIVE[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                      "|_ ",
+                                                      " _|"};
                                           
-const char Digit::ASCII_SIX[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                                   {'|', '_', ' '},
-                                                   {'|', '_', '|'}};
+const char Digit::ASCII_SIX[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                     "|_ ",
+                                                     "|_|"};
                                           
-const char Digit::ASCII_SEVEN[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                                     {' ', ' ', '|'},
-                                                     {' ', ' ', '|'}};
+const char Digit::ASCII_SEVEN[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                       "  |",
+                                                       "  |"};
                                           
-const char Digit::ASCII_EIGHT[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                                     {'|', '_', '|'},
-                                                     {'|', '_', '|'}};
+const char Digit::ASCII_EIGHT[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                       "|_|",
+                                                       "|_|"};
                                           
-const char Digit::ASCII_NINE[DEF_ROW][DEF_COL] = {{' ', '_', ' '},
-                                                    {'|', '_', '|'},
-                                                    {' ', ' ', '|'}};
+const char Digit::ASCII_NINE[DEF_ROW][DEF_COL + 1] = {" _ ",
+                                                      "|_|",
+                                                      "  |"};
 
 Digit::Digit() : Digit(0) { }
 
-Digit::Digit(int val) : Digit(val,COLOR_WHITE) { }
+Digit::Digit(int val) : Digit(val, -1) { }
 
 Digit::Digit(int val, int color)
 {
     // ncurses colors go from 0 - 7.
-    if(color < 0 || color > 7)
+    if(color < -1 || color > 7)
     {
-        color = COLOR_WHITE;
+        color = -1;
     }
 
     // Determine which array to use.
-    const char (*arr)[DEF_COL];
+    const char (*arr)[DEF_COL + 1];
     switch(val)
     {
         case 1:
@@ -98,24 +98,22 @@ Digit::Digit(int val, int color)
     for(size_t i = 0; i < row; i++)
     {
         dig[i] = new char[col + 1];
-        for(size_t j = 0; j < col; j++)
+        for(size_t j = 0; j < col + 1; j++)
         {
             dig[i][j] = arr[i][j];
         }
-
-        dig[i][col] = '\0';
     }
 
-    color = color;
+    this->color = color;
 }
 
 Digit::Digit(std::vector<std::vector<char>>& vec) : Digit(vec, COLOR_WHITE) { }
 
 Digit::Digit(std::vector<std::vector<char>>& vec, int color)
 {
-    if(color < 0 || color > 7)
+    if(color < -1 || color > 7)
     {
-        color = COLOR_WHITE;
+        color = -1;
     }
     
     row = vec.size();
@@ -125,15 +123,13 @@ Digit::Digit(std::vector<std::vector<char>>& vec, int color)
     for(size_t i = 0; i < row; i++)
     {
         dig[i] = new char[col + 1];
-        for(size_t j = 0; j < col; j++)
+        for(size_t j = 0; j < col + 1; j++)
         {
             dig[i][j] = vec[i][j];
         }
-
-        dig[i][col] = '\0';
     }
 
-    color = color;
+    this->color = color;
 }
 
 Digit::Digit(const Digit& digit)
@@ -203,7 +199,7 @@ void Digit::printDig()
 {
     // Print the digit with ncurses.
     // ncurses should be initialized first.
-    init_pair(1, color, -1);
+    init_pair(1, COLOR_RED, -1);
     attron(COLOR_PAIR(1));
     int y, x;
     getyx(stdscr, y, x);

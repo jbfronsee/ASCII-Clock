@@ -1,4 +1,4 @@
-#include "frame.hpp"
+#include "clock.hpp"
 #include <thread>
 #include <ncurses.h>
 
@@ -42,7 +42,7 @@ int main()
         if(elapsed > 1)
         {
             clear();
-            c.printTime();
+            c.displayClock();
             refresh();
             prev = now;
         }

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-Clock::Clock()
+Frame::Frame()
 {
     // Initialize array of digits.
     for(int i = 0; i < NUMDIG; i++)
@@ -22,32 +22,34 @@ Clock::Clock()
     updateTime();
 }
 
-Clock::Clock(const Clock& clock)
+Frame::Frame(const Frame& frame)
 {
-    this->digits = clock.digits;
-    this->separator = clock.separator;
-    this->currTime = clock.currTime;
+    this->digits = frame.digits;
+    this->separator = frame.separator;
+    this->currTime = frame.currTime;
 }
 
-Clock::~Clock()
+Frame::~Frame()
 {
 }
 
-Clock& Clock::operator=(const Clock& clock)
+Frame& Frame::operator=(const Frame& frame)
 {
-    this->digits = clock.digits;
-    this->separator = clock.separator;
-    this->currTime = clock.currTime;
+    this->digits = frame.digits;
+    this->separator = frame.separator;
+    this->currTime = frame.currTime;
 }
 
-void Clock::updateTime()
+void Frame::updateTime()
 {
     time_t t = std::time(0);
     currTime = std::localtime(&t);
 }
 
-void Clock::printSeparator()
+void Frame::printSeparator()
 {
+    //init_pair(1, COLOR_WHITE, -1);
+    //attron(COLOR_PAIR(1));
     int y, x;
     getyx(stdscr, y, x);
     for(size_t i = 0; i < separator.size(); i++)
@@ -57,14 +59,13 @@ void Clock::printSeparator()
     }
 
     move(y, x + 1);
+    //attroff(COLOR_PAIR(1));
 }
 
-void Clock::printTime()
+void Frame::printTime()
 {
     updateTime();
 
-    move((LINES - height)/2, (COLS - width)/2);
-    
     // Reformat time.
     int hour;
     if(currTime->tm_hour > 12)
@@ -107,12 +108,6 @@ void Clock::printTime()
     {
         int y, x;
         getyx(stdscr, y, x);
-        for(size_t i = 0; i < height; i++)
-        {
-            char sstr[] = {' ', ' ', ' ', '\0'};
-            mvprintw(y + i, x, sstr); 
-        }
-
         move(y, x + Digit::DEF_COL);
     }
 
@@ -125,7 +120,7 @@ void Clock::printTime()
     digits[mLSB].printDig();
 }
 
-void Clock::printDigits()
+void Frame::printDigits()
 {
     for(Digit d: digits)
     {

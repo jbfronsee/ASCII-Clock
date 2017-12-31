@@ -22,12 +22,12 @@ class Digit
         /* Class constants */
         static const size_t DEF_ROW = 3;
         static const size_t DEF_COL = 3;
-        static const char ASCII_ZERO[DEF_ROW][DEF_COL],
-        ASCII_ONE[DEF_ROW][DEF_COL],ASCII_TWO[DEF_ROW][DEF_COL],
-        ASCII_THREE[DEF_ROW][DEF_COL],ASCII_FOUR[DEF_ROW][DEF_COL],
-        ASCII_FIVE[DEF_ROW][DEF_COL],ASCII_SIX[DEF_ROW][DEF_COL],
-        ASCII_SEVEN[DEF_ROW][DEF_COL],ASCII_EIGHT[DEF_ROW][DEF_COL],
-        ASCII_NINE[DEF_ROW][DEF_COL];
+        static const char ASCII_ZERO[DEF_ROW][DEF_COL + 1],
+        ASCII_ONE[DEF_ROW][DEF_COL + 1],ASCII_TWO[DEF_ROW][DEF_COL + 1],
+        ASCII_THREE[DEF_ROW][DEF_COL + 1],ASCII_FOUR[DEF_ROW][DEF_COL + 1],
+        ASCII_FIVE[DEF_ROW][DEF_COL + 1],ASCII_SIX[DEF_ROW][DEF_COL + 1],
+        ASCII_SEVEN[DEF_ROW][DEF_COL + 1],ASCII_EIGHT[DEF_ROW][DEF_COL + 1],
+        ASCII_NINE[DEF_ROW][DEF_COL + 1];
         
        /**
         * Default constructor constructs an
@@ -123,4 +123,4 @@ class Digit
         int getColor();
 };
 
-#endif
+#endif /* DIGIT_H */

@@ -11,7 +11,7 @@
  * Represents the frame of a clock that displays
  * the current time using ncurses and ASCII art.
  */
-class Clock
+class Frame
 {
     private:
         static const size_t NUMDIG = 10;
@@ -39,14 +39,14 @@ class Clock
          * frame with 10 ASCII digits from
          * 0 - 9.
          */
-        Clock();
+        Frame();
 
         /* These three aren't necessary for now. */
-        Clock(const Clock& clock);
+        Frame(const Frame& clock);
 
-        ~Clock();
+        ~Frame();
 
-        Clock& operator=(const Clock& clock);
+        Frame& operator=(const Frame& clock);
 
         /**
          * Prints the current time of clock frame.
