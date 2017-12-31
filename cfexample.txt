@@ -1,0 +1,10 @@
+Example format for .cf file.
+starty and startx are the starting
+positions for the inner frame followed by
+the ASCII art clock.
+File example starts after this line:
+starty startx
++------------+
+|            |
+|            |
++------------+

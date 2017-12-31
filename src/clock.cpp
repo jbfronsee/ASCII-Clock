@@ -1,17 +1,20 @@
 #include "clock.hpp"
+#include <fstream>
+#include <sstream>
+#include <vector>
 
-const char Clock::FRAME1[][FRAME1W + 1] = {"  _______________  ",
-                                           " /               \\ ",
-                                           "|                 |",
-                                           "|                 |",
-                                           " \\_______________/ "};
+const char Clock::DEFAULT[][DEFAULT_W + 1] = {"  _______________  ",
+                                              " /               \\ ",
+                                              "|                 |",
+                                              "|                 |",
+                                              " \\_______________/ "};
 
-Clock::Clock()
+void Clock::constructDefault()
 {
-    height = FRAME1H;
-    width = FRAME1W;
-    starty = FRAME1YSTART;
-    startx = FRAME1XSTART;
+    height = DEFAULT_H;
+    width = DEFAULT_W;
+    starty = DEFAULT_YSTART;
+    startx = DEFAULT_XSTART;
 
     outer = new char*[height];
     for(size_t i = 0; i < height; i++)
@@ -19,8 +22,76 @@ Clock::Clock()
         outer[i] = new char[width + 1];
         for(size_t j = 0; j < width + 1; j++)
         {
-            outer[i][j] = FRAME1[i][j];
+            outer[i][j] = DEFAULT[i][j];
         }
+    }
+}
+
+Clock::Clock()
+{
+    constructDefault();
+}
+
+Clock::Clock(std::string& filename)
+{
+    std::ifstream inFile(filename);
+    if(inFile.is_open())
+    {
+        std::string header;
+        std::getline(inFile, header);
+        std::stringstream headStream(header);
+        if(!(headStream >> starty))
+        {
+            //TODO: Error Message
+            constructDefault();
+            return;
+        }
+        
+        if(!(headStream >> startx))
+        {
+            //TODO: Error Message
+            constructDefault();
+            return;
+        }
+
+        std::vector<std::string> clockframe;
+        std::string line;
+        std::getline(inFile, line);
+        width = line.size();
+        clockframe.push_back(line);
+        
+        while(std::getline(inFile, line))
+        {
+            if(line.size() != width)
+            {
+                //TODO: Error message
+                constructDefault();
+                return;
+            }
+            else
+            {
+                clockframe.push_back(line);
+            }
+        }
+
+        height = clockframe.size();
+
+        outer = new char*[height];
+        for(size_t i = 0; i < height; i++)
+        {
+            outer[i] = new char[width + 1];
+            for(size_t j = 0; j < width; j++)
+            {
+                outer[i][j] = clockframe[i][j];
+            }
+
+            outer[i][width] = '\0';
+        }
+    }
+    else
+    {
+        //TODO: Error message
+        constructDefault();
     }
 }
 

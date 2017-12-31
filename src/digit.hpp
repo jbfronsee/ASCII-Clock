@@ -20,6 +20,7 @@ class Digit
 
     public:
         /* Class constants */
+        static const int DEF_COLOR = 2;
         static const size_t DEF_ROW = 3;
         static const size_t DEF_COL = 3;
         static const char ASCII_ZERO[DEF_ROW][DEF_COL + 1],

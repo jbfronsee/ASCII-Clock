@@ -43,14 +43,14 @@ const char Digit::ASCII_NINE[DEF_ROW][DEF_COL + 1] = {" _ ",
 
 Digit::Digit() : Digit(0) { }
 
-Digit::Digit(int val) : Digit(val, -1) { }
+Digit::Digit(int val) : Digit(val, DEF_COLOR) { }
 
 Digit::Digit(int val, int color)
 {
-    // ncurses colors go from 0 - 7.
-    if(color < -1 || color > 7)
+    // ncurses colors go from 1 - 8.
+    if(color < 1 || color > 8)
     {
-        color = -1;
+        color = DEF_COLOR;
     }
 
     // Determine which array to use.
@@ -111,9 +111,9 @@ Digit::Digit(std::vector<std::vector<char>>& vec) : Digit(vec, COLOR_WHITE) { }
 
 Digit::Digit(std::vector<std::vector<char>>& vec, int color)
 {
-    if(color < -1 || color > 7)
+    if(color < 1 || color > 8)
     {
-        color = -1;
+        color = DEF_COLOR;
     }
     
     row = vec.size();
@@ -187,9 +187,9 @@ Digit& Digit::operator=(const Digit& digit)
 
 void Digit::setColor(int color)
 {
-    if(color < 0 || color > 7)
+    if(color < 1 || color > 8)
     {
-        color = COLOR_WHITE;
+        color = DEF_COLOR;
     }
      
     this->color = color;
@@ -199,8 +199,7 @@ void Digit::printDig()
 {
     // Print the digit with ncurses.
     // ncurses should be initialized first.
-    init_pair(1, COLOR_RED, -1);
-    attron(COLOR_PAIR(1));
+    attron(COLOR_PAIR(color));
     int y, x;
     getyx(stdscr, y, x);
     for(size_t i = 0; i < row; i++)
@@ -209,7 +208,7 @@ void Digit::printDig()
     }
 
     move(y, x + col);
-    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(color));
 }
 
 size_t Digit::getRow()
