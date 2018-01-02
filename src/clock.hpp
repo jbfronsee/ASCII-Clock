@@ -11,8 +11,8 @@
 class Clock
 {
     private:
-        size_t height, width,
-               starty, startx;
+        size_t height, width;
+        int starty, startx;
         char** outer;
         Frame inner;
 
@@ -25,8 +25,8 @@ class Clock
         static const size_t DEFAULT_H = 5;
         static const size_t DEFAULT_W = 19;
         static const char DEFAULT[DEFAULT_H][DEFAULT_W + 1];
-        static const size_t DEFAULT_YSTART = 1;
-        static const size_t DEFAULT_XSTART = 3;
+        static const int DEFAULT_YSTART = 1;
+        static const int DEFAULT_XSTART = 3;
 
         /**
          * Constructor uses default frame.
@@ -55,6 +55,30 @@ class Clock
          */
         Clock& operator=(const Clock& clock);
 
+        /**
+         * Returns current Y coordinate of frame.
+         */
+        int getFrameY();
+
+        /**
+         * Returns current X coordinate of frame.
+         */
+        int getFrameX();
+        /**
+         * Moves the frames left hand corner.
+         *
+         * @param y - Y-coordinate
+         * @param x - X-coordinate
+         */
+        void moveFrame(int y, int x);
+       
+        /**
+         * Writes the clock data to out.cf
+         *
+         * @return true if successful false otherwise
+         */
+        bool writeClock();
+        
         /**
          * Displays the clock on screen with
          * ncurses.

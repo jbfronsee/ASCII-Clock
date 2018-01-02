@@ -1,4 +1,6 @@
 #include "clock.hpp"
+#include "clockMenu.hpp"
+#include <chrono>
 #include <thread>
 #include <ncurses.h>
 #include <fstream>
@@ -21,6 +23,8 @@ int main()
         PAIR_CYAN = 7,
         PAIR_WHITE = 8
     };
+
+    const int MENU_COLOR_PAIR = 9;
 
     bool readClock = false;
     std::string filename;
@@ -49,6 +53,7 @@ int main()
     }
 
     initscr();
+    keypad(stdscr, TRUE);
     // Don't pause for user input.
     nodelay(stdscr, TRUE); 
     // Don't echo usr input.
@@ -74,12 +79,14 @@ int main()
     init_pair(PAIR_MAGENTA, COLOR_MAGENTA, -1);
     init_pair(PAIR_CYAN, COLOR_CYAN, -1);
     init_pair(PAIR_WHITE, COLOR_WHITE, -1);
+    init_pair(MENU_COLOR_PAIR, COLOR_WHITE, COLOR_BLUE);
 
     // Tracks time passed for updates.
-    time_t prev = 0;
-    time_t now;
+    std::chrono::milliseconds  prev;
+    std::chrono::milliseconds  now;
     
     Clock c;
+    ClockMenu menu(MENU_COLOR_PAIR);
 
     if(readClock)
     {
@@ -87,27 +94,84 @@ int main()
     }
 
     bool run = true;
+    bool showMenu = true;
+    bool moveInner = false;
     while(run)
     {
-        now = std::time(0);
-        time_t elapsed = now - prev;
+        using namespace std::chrono;
+        now = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+        milliseconds elapsed = now - prev;
         
-        if(elapsed > 1)
+        if(elapsed > milliseconds(50))
         {
             clear();
             c.displayClock();
+            if(showMenu)
+            {
+                menu.displayMenu();
+            }
+            
             refresh();
             prev = now;
         }
         else
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            // Sleep until update to save cpu usage.
+            std::this_thread::sleep_for(milliseconds(50));
         }
 
         int ch = getch();
-        if(ch == 'q')
+        if(!moveInner)
         {
-            run = false;
+            switch(ch)
+            {
+                case 'q':
+                    run = false;
+                    break;
+                case 'h':
+                    showMenu = !showMenu;
+                    break;
+                case 'm':
+                    showMenu = true;
+                    moveInner = true;
+                    menu.changeMessage(1);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            int y = 0;
+            int x = 0;
+            switch(ch)
+            {
+                case KEY_UP:
+                    y = c.getFrameY();
+                    c.moveFrame(--y, c.getFrameX());
+                    break;
+                case KEY_DOWN:
+                    y = c.getFrameY();
+                    c.moveFrame(++y, c.getFrameX());
+                    break;
+                case KEY_LEFT:
+                    x = c.getFrameX();
+                    c.moveFrame(c.getFrameY(), --x);
+                    break;
+                case KEY_RIGHT:
+                    x = c.getFrameX();
+                    c.moveFrame(c.getFrameY(), ++x);
+                    break;
+                case 'm':
+                    moveInner = false;
+                    menu.changeMessage(0);
+                    break;
+                case 's':
+                    c.writeClock();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

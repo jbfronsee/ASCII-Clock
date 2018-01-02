@@ -152,6 +152,41 @@ Clock& Clock::operator=(const Clock& clock)
     this->inner = clock.inner;
 }
 
+int Clock::getFrameY()
+{
+    return starty;
+}
+
+int Clock::getFrameX()
+{
+    return startx;
+}
+
+void Clock::moveFrame(int y, int x)
+{
+    starty = y;
+    startx = x;
+}
+
+bool Clock::writeClock()
+{
+    bool success = false;  
+    
+    std::ofstream outFile("out.cf");
+    if(outFile.is_open())
+    {
+        outFile << starty << " " << startx << std::endl;
+        for(size_t i = 0; i < height; i++)
+        {
+            outFile << outer[i] << std::endl;
+        }
+
+        success = true;
+    }
+
+    return success;
+}
+
 void Clock::displayClock()
 {
     move((LINES - height)/2, (COLS - width)/2);
