@@ -183,6 +183,8 @@ Digit& Digit::operator=(const Digit& digit)
     }
 
     this->color = digit.color;
+
+    return *this;
 }
 
 void Digit::setColor(int color)

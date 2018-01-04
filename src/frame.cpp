@@ -7,7 +7,7 @@
 Frame::Frame()
 {
     // Initialize array of digits.
-    for(int i = 0; i < NUMDIG; i++)
+    for(size_t i = 0; i < NUMDIG; i++)
     {
         digits.push_back(Digit(i));
     }
@@ -38,6 +38,7 @@ Frame& Frame::operator=(const Frame& frame)
     this->digits = frame.digits;
     this->separator = frame.separator;
     this->currTime = frame.currTime;
+    return *this;
 }
 
 void Frame::updateTime()

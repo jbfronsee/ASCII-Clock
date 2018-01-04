@@ -150,6 +150,8 @@ Clock& Clock::operator=(const Clock& clock)
     }
 
     this->inner = clock.inner;
+
+    return *this;
 }
 
 int Clock::getFrameY()
@@ -194,7 +196,7 @@ void Clock::displayClock()
    // init_pair(1, COLOR_WHITE, -1);
    // attron(COLOR_PAIR(1));
     int y, x;
-    getyx(stdscr, y, x);
+    getyx(stdscr, y, x); 
     for(size_t i = 0; i < height; i++)
     {
         mvprintw(y + i, x, outer[i]);
