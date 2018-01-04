@@ -71,7 +71,13 @@ class Clock
          * @param x - X-coordinate
          */
         void moveFrame(int y, int x);
-       
+
+        /**
+         * Switches frame to frame specified by filename.
+         *
+         * @param filename to read frame data from
+         */
+        void switchFrame(std::string filename);
         /**
          * Writes the clock data to out.cf
          *

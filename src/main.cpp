@@ -26,8 +26,8 @@ int main()
 
     const int MENU_COLOR_PAIR = 9;
 
-    bool readClock = false;
-    std::string filename;
+    bool readClock = false, readDigit = false;
+    std::string clockFname, digitFname;
     std::ifstream inFile("clock.conf");
     if(inFile.is_open())
     {
@@ -47,7 +47,15 @@ int main()
             }
             else if(s1 == "read_clock_file")
             {
-                lineStream >> filename;
+                lineStream >> clockFname;
+            }
+            else if(s1 == "read_digit")
+            {
+                lineStream >> readDigit;
+            }
+            else if(s1 == "read_digit_file")
+            {
+                lineStream >> digitFname;
             }
         }
     }
@@ -82,15 +90,20 @@ int main()
     init_pair(MENU_COLOR_PAIR, COLOR_WHITE, COLOR_BLUE);
 
     // Tracks time passed for updates.
-    std::chrono::milliseconds  prev;
-    std::chrono::milliseconds  now;
-    
+    std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+    std::chrono::milliseconds prev = now;
+
     Clock c;
     ClockMenu menu(MENU_COLOR_PAIR);
 
     if(readClock)
     {
-        c = Clock(filename);
+        c = Clock(clockFname);
+    }
+
+    if(readDigit)
+    {
+        c.switchFrame(digitFname);
     }
 
     bool run = true;

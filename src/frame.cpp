@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-Frame::Frame()
+void Frame::constructDefault()
 {
     // Initialize array of digits.
     for(size_t i = 0; i < NUMDIG; i++)
@@ -21,7 +21,88 @@ Frame::Frame()
     
     updateTime();
 }
+Frame::Frame()
+{
+    constructDefault();
+}
 
+Frame::Frame(std::string filename)
+{
+    std::ifstream inFile(filename);
+    if(inFile.is_open())
+    {
+        std::string header;
+        std::getline(inFile, header);
+        std::stringstream headStream(header);
+
+        // Store header info.
+        size_t row;
+        size_t col;
+        if(!(headStream >> row))
+        {
+            //TODO: Error message
+            constructDefault();
+        }
+        else if(!(headStream >> col))
+        {
+            //TODO: Error message
+            constructDefault();
+        }
+        else
+        {
+            bool fail = false;
+            for(size_t i = 0; !fail && i < NUMDIG; i++)
+            {
+                std::vector<std::vector<char>> asciiDig;
+                std::string line;
+                for(size_t j = 0; !fail && j < row && std::getline(inFile,line); j++)
+                {
+                    if(line.size() != col)
+                    {
+                        //TODO: Error message
+                        constructDefault();
+                        fail = true;
+                    }
+                    else
+                    {
+                        asciiDig.push_back(std::vector<char>());
+                        for(size_t k = 0; k < col; k++)
+                        {
+                            asciiDig.at(j).push_back(line.at(k));
+                        }
+                    }
+                }
+
+                if(asciiDig.size() != row)
+                {
+                    //TODO: Error message
+                    constructDefault();
+                    fail = true;
+                }
+                else
+                {
+                    digits.push_back(Digit(asciiDig));
+                }
+            }
+
+            if(!fail)
+            {
+                height = row;
+                width = col*4 + 1;
+                separator.push_back(' ');
+                separator.push_back('.');
+                separator.push_back('.');
+    
+                updateTime();
+            }
+        }
+    }
+    else
+    {
+        //TODO: Error message
+        constructDefault();
+    }
+}
 Frame::Frame(const Frame& frame)
 {
     this->digits = frame.digits;

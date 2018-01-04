@@ -170,6 +170,10 @@ void Clock::moveFrame(int y, int x)
     startx = x;
 }
 
+void Clock::switchFrame(std::string filename)
+{
+    inner = Frame(filename);
+}
 bool Clock::writeClock()
 {
     bool success = false;  
