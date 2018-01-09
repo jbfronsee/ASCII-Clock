@@ -107,7 +107,7 @@ Digit::Digit(int val, int color)
     this->color = color;
 }
 
-Digit::Digit(std::vector<std::vector<char>>& vec) : Digit(vec, COLOR_WHITE) { }
+Digit::Digit(std::vector<std::vector<char>>& vec) : Digit(vec, DEF_COLOR) { }
 
 Digit::Digit(std::vector<std::vector<char>>& vec, int color)
 {
@@ -183,6 +183,8 @@ Digit& Digit::operator=(const Digit& digit)
     }
 
     this->color = digit.color;
+
+    return *this;
 }
 
 void Digit::setColor(int color)

@@ -1,4 +1,0 @@
-delim n m
-DIGIT0delimDIGIT1delimDIGIT2...DIGIT10
-
-DIGIT is nxm representation of a digit.
