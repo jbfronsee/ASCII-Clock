@@ -27,12 +27,14 @@ void Clock::constructDefault()
     }
 }
 
-Clock::Clock()
+Clock::Clock(Tui& tui)
+: m_tui(tui)
 {
     constructDefault();
 }
 
-Clock::Clock(std::string& filename)
+Clock::Clock(std::string& filename, Tui& tui)
+: m_tui(tui)
 {
     std::ifstream inFile(filename);
     if(inFile.is_open())
@@ -96,6 +98,7 @@ Clock::Clock(std::string& filename)
 }
 
 Clock::Clock(const Clock& clock)
+: m_tui(clock.m_tui)
 {
     this->height = clock.height;
     this->width = clock.width;
@@ -197,8 +200,6 @@ void Clock::displayClock()
 {
     move((LINES - height)/2, (COLS - width)/2);
 
-   // init_pair(1, COLOR_WHITE, -1);
-   // attron(COLOR_PAIR(1));
     int y, x;
     getyx(stdscr, y, x); 
     for(size_t i = 0; i < height; i++)
@@ -207,6 +208,5 @@ void Clock::displayClock()
     }
 
     move(y + starty, x + startx);
-    //attroff(COLOR_PAIR(1));
     inner.printTime();
 }

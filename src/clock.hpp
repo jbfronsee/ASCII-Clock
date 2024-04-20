@@ -4,6 +4,7 @@
 #include <ncurses.h>
 #include <string>
 #include "frame.hpp"
+#include "tui.hpp"
 
 /**
  * Outer frame of clock.
@@ -15,6 +16,7 @@ class Clock
         int starty, startx;
         char** outer;
         Frame inner;
+        Tui& m_tui;
 
         /**
          * Helper function to call default constructor.
@@ -31,14 +33,14 @@ class Clock
         /**
          * Constructor uses default frame.
          */
-        Clock();
+        Clock(Tui& tui);
 
         /**
          * Read the clock contents from a file.
          * 
          * @param filename - The name of the file to read from.
          */
-        Clock(std::string& filename);
+        Clock(std::string& filename, Tui& tui);
 
         /**
          * Copy constructor.

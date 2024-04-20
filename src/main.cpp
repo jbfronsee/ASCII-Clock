@@ -1,4 +1,4 @@
-#include "TUI.hpp"
+#include "tui.hpp"
 #include "clock.hpp"
 #include "clockMenu.hpp"
 #include <chrono>
@@ -49,18 +49,18 @@ int main()
         }
     }
 
-    TUI tui;
+    Tui tui;
 
     // Tracks time passed for updates.
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     std::chrono::milliseconds prev = now;
 
-    Clock c;
+    Clock c(tui);
     ClockMenu menu(MENU_COLOR_PAIR);
 
     if(readClock)
     {
-        c = Clock(clockFname);
+        c = Clock(clockFname, tui);
     }
 
     if(readDigit)

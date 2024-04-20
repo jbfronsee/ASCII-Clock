@@ -1,7 +1,7 @@
-#include "TUI.hpp"
+#include "tui.hpp"
 #include <ncurses.h>
 
-TUI::TUI()
+Tui::Tui()
 {
   enum ColorPairs
   {
@@ -46,7 +46,21 @@ TUI::TUI()
   init_pair(PAIR_MENU, COLOR_WHITE, COLOR_BLUE);
 }
 
-TUI::~TUI()
+void Tui::DisplayMessagesAndMove(const std::vector<std::string>& messages, int add_x, int add_y)
+{
+    int y, x;
+    getyx(stdscr, y, x);
+    int i = 0;
+    for(std::string message : messages)
+    {
+       mvprintw(y + i, x, "%s", message.c_str());
+       i++;
+    }
+
+    move(y + add_y, x + add_x);
+}
+
+Tui::~Tui()
 {
   endwin();
 }
