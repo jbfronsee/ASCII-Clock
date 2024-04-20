@@ -14,11 +14,11 @@ void Frame::constructDefault()
 
     height = Digit::DEF_ROW;
     width = Digit::DEF_COL*4 + 1;
- 
-    separator.push_back(' ');
-    separator.push_back('.');
-    separator.push_back('.');
-    
+
+    separator.push_back(" ");
+    separator.push_back(".");
+    separator.push_back(".");
+
     updateTime();
 }
 Frame::Frame()
@@ -85,10 +85,10 @@ Frame::Frame(std::string filename)
             {
                 height = row;
                 width = col*4 + 1;
-                separator.push_back(' ');
-                separator.push_back('.');
-                separator.push_back('.');
-    
+                separator.push_back(" ");
+                separator.push_back(".");
+                separator.push_back(".");
+
                 updateTime();
             }
         }
@@ -124,20 +124,9 @@ void Frame::updateTime()
     currTime = std::localtime(&t);
 }
 
-void Frame::printSeparator()
+void Frame::printSeparator(const Tui& tui)
 {
-    //init_pair(1, COLOR_WHITE, -1);
-    //attron(COLOR_PAIR(1));
-    int y, x;
-    getyx(stdscr, y, x);
-    for(size_t i = 0; i < separator.size(); i++)
-    {
-       char sstr[] = {separator[i], '\0'};
-       mvprintw(y + i, x, sstr); 
-    }
-
-    move(y, x + 1);
-    //attroff(COLOR_PAIR(1));
+    tui.DisplayMessagesAndMove(separator, 1, 0);
 }
 
 void Frame::printTime(const Tui& tui)
@@ -191,7 +180,7 @@ void Frame::printTime(const Tui& tui)
 
     digits[hour].printDig(tui);
 
-    printSeparator();
+    printSeparator(tui);
 
     digits[mMSB].printDig(tui);
 

@@ -17,8 +17,8 @@ class Frame
     private:
         static const size_t NUMDIG = 10;
         std::vector<Digit> digits;
-        
-        std::vector<char> separator;
+
+        std::vector<std::string> separator;
         std::tm* currTime;
 
         size_t height;
@@ -32,11 +32,11 @@ class Frame
          * Update currTime to hold current time.
          */
         void updateTime();
-        
+
         /**
          * Prints the hours/min separator.
          */
-        void printSeparator();
+        void printSeparator(const Tui& tui);
 
     public:
         /**
