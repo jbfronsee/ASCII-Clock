@@ -14,7 +14,7 @@ class Clock
     private:
         size_t height, width;
         int starty, startx;
-        char** outer;
+        std::vector<std::string> outer;
         Frame inner;
         Tui& m_tui;
 
@@ -26,7 +26,7 @@ class Clock
     public:
         static const size_t DEFAULT_H = 5;
         static const size_t DEFAULT_W = 19;
-        static const char DEFAULT[DEFAULT_H][DEFAULT_W + 1];
+        static const std::vector<std::string> DEFAULT;
         static const int DEFAULT_YSTART = 1;
         static const int DEFAULT_XSTART = 3;
 
