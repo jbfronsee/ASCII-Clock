@@ -156,5 +156,5 @@ void Clock::displayClock()
 {
     move((LINES - height)/2, (COLS - width)/2);
     m_tui.DisplayMessagesAndMove(outer, startx, starty);
-    inner.printTime();
+    inner.printTime(m_tui);
 }

@@ -11,7 +11,7 @@ class Tui
     Tui();
     ~Tui();
 
-    void DisplayMessagesAndMove(const std::vector<std::string>& message, int add_x, int add_y);
+    void DisplayMessagesAndMove(const std::vector<std::string>& message, int add_x, int add_y) const;
 };
 
 #endif /* TUI_H */

@@ -53,7 +53,7 @@ Frame::Frame(std::string filename)
             bool fail = false;
             for(size_t i = 0; !fail && i < NUMDIG; i++)
             {
-                std::vector<std::vector<char>> asciiDig;
+                std::vector<std::string> asciiDig;
                 std::string line;
                 for(size_t j = 0; !fail && j < row && std::getline(inFile,line); j++)
                 {
@@ -65,11 +65,7 @@ Frame::Frame(std::string filename)
                     }
                     else
                     {
-                        asciiDig.push_back(std::vector<char>());
-                        for(size_t k = 0; k < col; k++)
-                        {
-                            asciiDig.at(j).push_back(line.at(k));
-                        }
+                        asciiDig.push_back(line);
                     }
                 }
 
@@ -144,7 +140,7 @@ void Frame::printSeparator()
     //attroff(COLOR_PAIR(1));
 }
 
-void Frame::printTime()
+void Frame::printTime(const Tui& tui)
 {
     updateTime();
 
@@ -184,7 +180,7 @@ void Frame::printTime()
     // Print digits to console.
     if(len == 2)
     {
-        digits[1].printDig();
+        digits[1].printDig(tui);
     }
     else
     {
@@ -193,19 +189,19 @@ void Frame::printTime()
         move(y, x + Digit::DEF_COL);
     }
 
-    digits[hour].printDig();
+    digits[hour].printDig(tui);
 
     printSeparator();
 
-    digits[mMSB].printDig();
+    digits[mMSB].printDig(tui);
 
-    digits[mLSB].printDig();
+    digits[mLSB].printDig(tui);
 }
 
-void Frame::printDigits()
+void Frame::printDigits(const Tui& tui)
 {
     for(Digit d: digits)
     {
-        d.printDig();
+        d.printDig(tui);
     }
 }

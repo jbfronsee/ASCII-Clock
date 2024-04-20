@@ -1,45 +1,65 @@
 #include "digit.hpp"
 #include <ncurses.h>
 
-const char Digit::ASCII_ZERO[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                      "| |",
-                                                      "|_|"};
-                                        
-const char Digit::ASCII_ONE[DEF_ROW][DEF_COL + 1] = {"   ",
-                                                     "  |",
-                                                     "  |"};
-                                          
-const char Digit::ASCII_TWO[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                     " _|",    
-                                                     "|_ "};
-                                          
-const char Digit::ASCII_THREE[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                       " _|",
-                                                       " _|"};
-                                          
-const char Digit::ASCII_FOUR[DEF_ROW][DEF_COL + 1] = {"   ",
-                                                      "|_|",
-                                                      "  |"};
-                                          
-const char Digit::ASCII_FIVE[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                      "|_ ",
-                                                      " _|"};
-                                          
-const char Digit::ASCII_SIX[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                     "|_ ",
-                                                     "|_|"};
-                                          
-const char Digit::ASCII_SEVEN[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                       "  |",
-                                                       "  |"};
-                                          
-const char Digit::ASCII_EIGHT[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                       "|_|",
-                                                       "|_|"};
-                                          
-const char Digit::ASCII_NINE[DEF_ROW][DEF_COL + 1] = {" _ ",
-                                                      "|_|",
-                                                      "  |"};
+const std::vector<std::string> Digit::ASCII_ZERO = {
+    " _ ",
+    "| |",
+    "|_|"
+};
+
+const std::vector<std::string> Digit::ASCII_ONE = {
+    "   ",
+    "  |",
+    "  |"
+};
+
+const std::vector<std::string> Digit::ASCII_TWO = {
+    " _ ",
+    " _|",
+    "|_ "
+};
+
+const std::vector<std::string> Digit::ASCII_THREE = {
+    " _ ",
+    " _|",
+    " _|"
+};
+
+const std::vector<std::string> Digit::ASCII_FOUR = {
+    "   ",
+    "|_|",
+    "  |"
+};
+
+const std::vector<std::string> Digit::ASCII_FIVE = {
+    " _ ",
+    "|_ ",
+    " _|"
+};
+
+const std::vector<std::string> Digit::ASCII_SIX = {
+    " _ ",
+    "|_ ",
+    "|_|"
+};
+
+const std::vector<std::string> Digit::ASCII_SEVEN = {
+    " _ ",
+    "  |",
+    "  |"
+};
+
+const std::vector<std::string> Digit::ASCII_EIGHT = {
+    " _ ",
+    "|_|",
+    "|_|"
+};
+
+const std::vector<std::string> Digit::ASCII_NINE = {
+    " _ ",
+    "|_|",
+    "  |"
+};
 
 Digit::Digit() : Digit(0) { }
 
@@ -54,7 +74,7 @@ Digit::Digit(int val, int color)
     }
 
     // Determine which array to use.
-    const char (*arr)[DEF_COL + 1];
+    std::vector<std::string> arr;
     switch(val)
     {
         case 1:
@@ -89,45 +109,29 @@ Digit::Digit(int val, int color)
             break;
     }
 
-   
+
     // Build the dig array with ASCII default.
     row = DEF_ROW; 
     col = DEF_COL;
-   
-    dig = new char*[row];
-    for(size_t i = 0; i < row; i++)
-    {
-        dig[i] = new char[col + 1];
-        for(size_t j = 0; j < col + 1; j++)
-        {
-            dig[i][j] = arr[i][j];
-        }
-    }
+
+    dig = arr;
 
     this->color = color;
 }
 
-Digit::Digit(std::vector<std::vector<char>>& vec) : Digit(vec, DEF_COLOR) { }
+Digit::Digit(std::vector<std::string>& vec) : Digit(vec, DEF_COLOR) { }
 
-Digit::Digit(std::vector<std::vector<char>>& vec, int color)
+Digit::Digit(std::vector<std::string>& vec, int color)
 {
     if(color < 1 || color > 8)
     {
         color = DEF_COLOR;
     }
-    
+
     row = vec.size();
     col = vec.at(0).size();
 
-    dig = new char*[row];
-    for(size_t i = 0; i < row; i++)
-    {
-        dig[i] = new char[col + 1];
-        for(size_t j = 0; j < col + 1; j++)
-        {
-            dig[i][j] = vec[i][j];
-        }
-    }
+    dig = vec;
 
     this->color = color;
 }
@@ -136,52 +140,23 @@ Digit::Digit(const Digit& digit)
 {
     this->row = digit.row;
     this->col = digit.col;
-    
-    this->dig = new char*[digit.row];
-    for(size_t i = 0; i < digit.row; i++)
-    {
-        this->dig[i] = new char[digit.col];
-        for(size_t j = 0; j < digit.col + 1; j++)
-        {
-            this->dig[i][j] = digit.dig[i][j];
-        }
-    }
+
+    this->dig = digit.dig;
 
     this->color = digit.color;
 }
 
 Digit::~Digit()
 {
-    for(size_t i = 0; i < row; i++)
-    {
-        delete[] dig[i];
-    }
 
-    delete [] dig;
 }
 
 Digit& Digit::operator=(const Digit& digit)
 {
-    for(size_t i = 0; i < this->row; i++)
-    {
-        delete[] this->dig[i];
-    }
-
-    delete[] this->dig;
-
     this->row = digit.row;
     this->col = digit.col;
-    
-    this->dig = new char*[digit.row];
-    for(size_t i = 0; i < digit.row; i++)
-    {
-        this->dig[i] = new char[digit.col];
-        for(size_t j = 0; j < digit.col + 1; j++)
-        {
-            this->dig[i][j] = digit.dig[i][j];
-        }
-    }
 
+    this->dig = digit.dig;
     this->color = digit.color;
 
     return *this;
@@ -193,23 +168,16 @@ void Digit::setColor(int color)
     {
         color = DEF_COLOR;
     }
-     
+
     this->color = color;
 }
 
-void Digit::printDig()
+void Digit::printDig(const Tui& tui)
 {
     // Print the digit with ncurses.
     // ncurses should be initialized first.
     attron(COLOR_PAIR(color));
-    int y, x;
-    getyx(stdscr, y, x);
-    for(size_t i = 0; i < row; i++)
-    {
-        mvprintw(y + i, x, dig[i]); 
-    }
-
-    move(y, x + col);
+    tui.DisplayMessagesAndMove(dig, col, 0);
     attroff(COLOR_PAIR(color));
 }
 

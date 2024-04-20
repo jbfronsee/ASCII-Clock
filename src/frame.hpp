@@ -62,12 +62,12 @@ class Frame
         /**
          * Prints the current time of clock frame.
          */
-        void printTime();
+        void printTime(const Tui& tui);
 
         /**
          * Prints digits in order for debugging.
          */
-        void printDigits();
+        void printDigits(const Tui& tui);
 };
 
 #endif /* FRAME_H */

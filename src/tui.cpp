@@ -46,7 +46,7 @@ Tui::Tui()
   init_pair(PAIR_MENU, COLOR_WHITE, COLOR_BLUE);
 }
 
-void Tui::DisplayMessagesAndMove(const std::vector<std::string>& messages, int add_x, int add_y)
+void Tui::DisplayMessagesAndMove(const std::vector<std::string>& messages, int add_x, int add_y) const
 {
     int y, x;
     getyx(stdscr, y, x);
