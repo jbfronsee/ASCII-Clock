@@ -4,7 +4,7 @@
 #include <ncurses.h>
 #include <string>
 #include "frame.hpp"
-#include "tui.hpp"
+#include "../tui/tui.hpp"
 
 /**
  * Outer frame of clock.

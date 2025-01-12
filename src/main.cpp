@@ -1,6 +1,6 @@
-#include "tui.hpp"
-#include "clock.hpp"
-#include "clockMenu.hpp"
+#include "tui/tui.hpp"
+#include "clock/clock.hpp"
+#include "menu/clockMenu.hpp"
 #include <chrono>
 #include <thread>
 #include <ncurses.h>

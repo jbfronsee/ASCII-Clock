@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "tui.hpp"
+#include "../tui/tui.hpp"
 
 /**
  * @author Joshua Fronsee <jbfronsee@gmail.com>
