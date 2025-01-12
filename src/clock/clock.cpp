@@ -156,7 +156,7 @@ void Clock::displayClock()
 {
     m_tui.Clear();
     // Center the clock in the terminal
-    m_tui.Move((m_tui.Lines() - height)/2, (m_tui.Cols() - width)/2);
+    m_tui.Move((m_tui.Cols() - width)/2, (m_tui.Lines() - height)/2);
     m_tui.DisplayMessages(outer, startx, starty);
     inner.printTime(m_tui);
 }
