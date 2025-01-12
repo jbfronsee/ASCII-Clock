@@ -2,6 +2,7 @@
 #define TUI_H
 #include <string>
 #include <vector>
+#include <optional>
 
 class Tui
 {
@@ -11,7 +12,23 @@ class Tui
     Tui();
     ~Tui();
 
-    void DisplayMessagesAndMove(const std::vector<std::string>& message, int add_x, int add_y) const;
+    int Lines() const;
+
+    int Cols() const;
+
+    void Clear() const;
+
+    void Move(const int x, const int y) const;
+
+    void DisplayMessages(
+      const std::vector<std::string>& message,
+      const int add_x,
+      const int add_y,
+      const std::optional<int> color = std::nullopt
+    ) const;
+
+    // Refresh and dump contents to screen
+    void Refresh() const;
 };
 
 #endif /* TUI_H */

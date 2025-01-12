@@ -154,7 +154,9 @@ bool Clock::writeClock()
 
 void Clock::displayClock()
 {
-    move((LINES - height)/2, (COLS - width)/2);
-    m_tui.DisplayMessagesAndMove(outer, startx, starty);
+    m_tui.Clear();
+    // Center the clock in the terminal
+    m_tui.Move((m_tui.Lines() - height)/2, (m_tui.Cols() - width)/2);
+    m_tui.DisplayMessages(outer, startx, starty);
     inner.printTime(m_tui);
 }

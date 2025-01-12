@@ -1,5 +1,4 @@
 #include "digit.hpp"
-#include <ncurses.h>
 
 const std::vector<std::string> Digit::ASCII_ZERO = {
     " _ ",
@@ -174,11 +173,7 @@ void Digit::setColor(int color)
 
 void Digit::printDig(const Tui& tui)
 {
-    // Print the digit with ncurses.
-    // ncurses should be initialized first.
-    attron(COLOR_PAIR(color));
-    tui.DisplayMessagesAndMove(dig, col, 0);
-    attroff(COLOR_PAIR(color));
+    tui.DisplayMessages(dig, col, 0, color);
 }
 
 size_t Digit::getRow()

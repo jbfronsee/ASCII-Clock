@@ -1,5 +1,4 @@
 #include "frame.hpp"
-#include <ncurses.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -126,7 +125,7 @@ void Frame::updateTime()
 
 void Frame::printSeparator(const Tui& tui)
 {
-    tui.DisplayMessagesAndMove(separator, 1, 0);
+    tui.DisplayMessages(separator, 1, 0);
 }
 
 void Frame::printTime(const Tui& tui)

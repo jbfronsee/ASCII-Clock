@@ -3,7 +3,6 @@
 #include "menu/clockMenu.hpp"
 #include <chrono>
 #include <thread>
-#include <ncurses.h>
 #include <fstream>
 #include <sstream>
 
@@ -79,14 +78,13 @@ int main()
 
         if(elapsed > milliseconds(50))
         {
-            clear();
             c.displayClock();
             if(showMenu)
             {
                 menu.displayMenu();
             }
 
-            refresh();
+            tui.Refresh();
             prev = now;
         }
         else
