@@ -36,7 +36,7 @@ class Frame
         /**
          * Prints the hours/min separator.
          */
-        void printSeparator(const Tui& tui);
+        void printSeparator();
 
     public:
         /**
@@ -62,12 +62,12 @@ class Frame
         /**
          * Prints the current time of clock frame.
          */
-        void printTime(const Tui& tui);
+        void printTime();
 
         /**
          * Prints digits in order for debugging.
          */
-        void printDigits(const Tui& tui);
+        void printDigits();
 };
 
 #endif /* FRAME_H */

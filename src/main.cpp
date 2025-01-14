@@ -1,6 +1,7 @@
 #include "tui/tui.hpp"
 #include "clock/clock.hpp"
 #include "menu/clockMenu.hpp"
+#include <ncurses.h> //TODO clean up getch and get rid of this
 #include <chrono>
 #include <thread>
 #include <fstream>
@@ -48,18 +49,18 @@ int main()
         }
     }
 
-    Tui tui;
+    Tui::Init();
 
     // Tracks time passed for updates.
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     std::chrono::milliseconds prev = now;
 
-    Clock c(tui);
+    Clock c;
     ClockMenu menu(MENU_COLOR_PAIR);
 
     if(readClock)
     {
-        c = Clock(clockFname, tui);
+        c = Clock(clockFname);
     }
 
     if(readDigit)
@@ -84,7 +85,7 @@ int main()
                 menu.displayMenu();
             }
 
-            tui.Refresh();
+            Tui::Refresh();
             prev = now;
         }
         else
@@ -148,5 +149,6 @@ int main()
         }
     }
 
+    Tui::Close();
     return 0;
 }

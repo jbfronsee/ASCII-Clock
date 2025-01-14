@@ -3,7 +3,6 @@
 
 #include <string>
 #include "frame.hpp"
-#include "../tui/tui.hpp"
 
 /**
  * Outer frame of clock.
@@ -15,7 +14,6 @@ class Clock
         int starty, startx;
         std::vector<std::string> outer;
         Frame inner;
-        Tui& m_tui;
 
         /**
          * Helper function to call default constructor.
@@ -32,14 +30,14 @@ class Clock
         /**
          * Constructor uses default frame.
          */
-        Clock(Tui& tui);
+        Clock();
 
         /**
          * Read the clock contents from a file.
          * 
          * @param filename - The name of the file to read from.
          */
-        Clock(std::string& filename, Tui& tui);
+        Clock(std::string& filename);
 
         /**
          * Copy constructor.

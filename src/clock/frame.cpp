@@ -1,4 +1,5 @@
 #include "frame.hpp"
+#include "../tui/tui.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -123,12 +124,12 @@ void Frame::updateTime()
     currTime = std::localtime(&t);
 }
 
-void Frame::printSeparator(const Tui& tui)
+void Frame::printSeparator()
 {
-    tui.DisplayMessages(separator, 1, 0);
+    Tui::DisplayMessages(separator, 1, 0);
 }
 
-void Frame::printTime(const Tui& tui)
+void Frame::printTime()
 {
     updateTime();
 
@@ -168,28 +169,28 @@ void Frame::printTime(const Tui& tui)
     // Print digits to console.
     if(len == 2)
     {
-        digits[1].printDig(tui);
+        digits[1].printDig();
     }
     else
     {
-        int y, x;
-        getyx(stdscr, y, x);
-        move(y, x + Digit::DEF_COL);
+
+        auto [x, y] = Tui::GetXY();
+        Tui::Move(x + Digit::DEF_COL, y);
     }
 
-    digits[hour].printDig(tui);
+    digits[hour].printDig();
 
-    printSeparator(tui);
+    printSeparator();
 
-    digits[mMSB].printDig(tui);
+    digits[mMSB].printDig();
 
-    digits[mLSB].printDig(tui);
+    digits[mLSB].printDig();
 }
 
-void Frame::printDigits(const Tui& tui)
+void Frame::printDigits()
 {
     for(Digit d: digits)
     {
-        d.printDig(tui);
+        d.printDig();
     }
 }

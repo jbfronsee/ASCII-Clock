@@ -1,7 +1,7 @@
 #include "tui.hpp"
 #include <ncurses.h>
 
-Tui::Tui()
+void Tui::Init()
 {
     enum ColorPairs
     {
@@ -46,24 +46,51 @@ Tui::Tui()
     init_pair(PAIR_MENU, COLOR_WHITE, COLOR_BLUE);
 }
 
-int Tui::Lines() const
+int Tui::Lines()
 {
   return LINES;
 }
 
-int Tui::Cols() const
+int Tui::Cols()
 {
   return COLS;
 }
 
-void Tui::Clear() const
+void Tui::Clear()
 {
     clear();
 }
 
-void Tui::Move(const int x, const int y) const
+std::pair<int, int> Tui::GetXY()
+{
+    int y, x;
+    getyx(stdscr, y, x);
+    return std::pair<int, int>(x, y);
+}
+
+void Tui::Move(const int x, const int y)
 {
     move(y, x);
+}
+
+void Tui::DisplayMessage(
+  const int x,
+  const int y,
+  const std::string& message,
+  const std::optional<int> color
+)
+{
+    if (color)
+    {
+        attron(COLOR_PAIR(color.value()));
+    }
+
+    mvprintw(y, x, "%s", message.c_str());
+
+    if (color)
+    {
+        attroff(COLOR_PAIR(color.value()));
+    }
 }
 
 void Tui::DisplayMessages(
@@ -71,7 +98,7 @@ void Tui::DisplayMessages(
     const int add_x,
     const int add_y,
     const std::optional<int> color
-) const
+)
 {
     if (color)
     {
@@ -83,7 +110,7 @@ void Tui::DisplayMessages(
     int i = 0;
     for(std::string message : messages)
     {
-        mvprintw(y + i, x, "%s", message.c_str());
+        DisplayMessage(x, y + i, message);
         i++;
     }
 
@@ -95,12 +122,12 @@ void Tui::DisplayMessages(
     }
 }
 
-void Tui::Refresh() const
+void Tui::Refresh()
 {
     refresh();
 }
 
-Tui::~Tui()
+void Tui::Close()
 {
     endwin();
 }

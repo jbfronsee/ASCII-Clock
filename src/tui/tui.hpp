@@ -4,31 +4,38 @@
 #include <vector>
 #include <optional>
 
-class Tui
+namespace Tui
 {
-  private:
+    void Init();
 
-  public:
-    Tui();
-    ~Tui();
+    void Close();
 
-    int Lines() const;
+    int Lines();
 
-    int Cols() const;
+    int Cols();
 
-    void Clear() const;
+    void Clear();
 
-    void Move(const int x, const int y) const;
+    std::pair<int, int> GetXY();
+
+    void Move(const int x, const int y);
+
+    void DisplayMessage(
+      const int x,
+      const int y,
+      const std::string& message,
+      const std::optional<int> color = std::nullopt
+    );
 
     void DisplayMessages(
       const std::vector<std::string>& message,
       const int add_x,
       const int add_y,
       const std::optional<int> color = std::nullopt
-    ) const;
+    );
 
     // Refresh and dump contents to screen
-    void Refresh() const;
+    void Refresh();
 };
 
 #endif /* TUI_H */

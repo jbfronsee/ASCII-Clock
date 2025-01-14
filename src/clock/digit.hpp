@@ -1,11 +1,8 @@
 #ifndef DIGIT_H
 #define DIGIT_H
 
-#include <ncurses.h>
 #include <string>
 #include <vector>
-
-#include "../tui/tui.hpp"
 
 /**
  * @author Joshua Fronsee <jbfronsee@gmail.com>
@@ -106,7 +103,7 @@ class Digit
          * Prints Digit using ncurses. ncurses must be
          * initialized for this to work.
          */
-        void printDig(const Tui& tui);
+        void printDig();
 
         /* Getter Methods */
 

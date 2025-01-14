@@ -1,4 +1,5 @@
 #include "digit.hpp"
+#include "../tui/tui.hpp"
 
 const std::vector<std::string> Digit::ASCII_ZERO = {
     " _ ",
@@ -171,9 +172,9 @@ void Digit::setColor(int color)
     this->color = color;
 }
 
-void Digit::printDig(const Tui& tui)
+void Digit::printDig()
 {
-    tui.DisplayMessages(dig, col, 0, color);
+    Tui::DisplayMessages(dig, col, 0, color);
 }
 
 size_t Digit::getRow()
