@@ -5,7 +5,7 @@ class ClockMenu
 {
     private:
         size_t x, y, height, width;
-        int color;
+        int m_color;
         std::vector<std::string> messages;
         size_t currMessage;
 
@@ -16,16 +16,12 @@ class ClockMenu
         void refreshMenu();
         
     public:
-        /**
-         * Construct the menu object.
-         */
-        ClockMenu();
-        
+
         /**
          * Construct menu object with
          * color pair specified by color.
          */
-        ClockMenu(int color);
+        ClockMenu(int color = 1);
       
         /**
          * Display menu to screen.

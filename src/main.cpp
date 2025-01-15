@@ -1,8 +1,8 @@
-#include "clock.hpp"
-#include "clockMenu.hpp"
+#include "tui/tui.hpp"
+#include "clock/clock.hpp"
+#include "menu/clockMenu.hpp"
 #include <chrono>
 #include <thread>
-#include <ncurses.h>
 #include <fstream>
 #include <sstream>
 
@@ -12,18 +12,6 @@
  */
 int main()
 {
-    enum ColorPairs
-    {
-        PAIR_BLACK = 1,
-        PAIR_RED = 2,
-        PAIR_GREEN = 3,
-        PAIR_YELLOW = 4,
-        PAIR_BLUE = 5,
-        PAIR_MAGENTA = 6,
-        PAIR_CYAN = 7,
-        PAIR_WHITE = 8
-    };
-
     const int MENU_COLOR_PAIR = 9;
 
     bool readClock = false, readDigit = false;
@@ -33,7 +21,7 @@ int main()
     {
 
         std::string line;
-        
+
         while(std::getline(inFile, line))
         {
             std::stringstream lineStream(line);
@@ -60,34 +48,7 @@ int main()
         }
     }
 
-    initscr();
-    keypad(stdscr, TRUE);
-    // Don't pause for user input.
-    nodelay(stdscr, TRUE); 
-    // Don't echo usr input.
-    noecho();
-    // Turn off cursor.
-    curs_set(0);
-
-    if(has_colors() == false)
-    {
-        endwin();
-        printf("Color is not supported by terminal.");
-        exit(1);
-    }
-
-    // Set up colors.
-    start_color();
-    use_default_colors(); 
-    init_pair(PAIR_BLACK, COLOR_BLACK, -1);
-    init_pair(PAIR_RED, COLOR_RED, -1);
-    init_pair(PAIR_GREEN, COLOR_GREEN, -1);
-    init_pair(PAIR_YELLOW, COLOR_YELLOW, -1);
-    init_pair(PAIR_BLUE, COLOR_BLUE, -1);
-    init_pair(PAIR_MAGENTA, COLOR_MAGENTA, -1);
-    init_pair(PAIR_CYAN, COLOR_CYAN, -1);
-    init_pair(PAIR_WHITE, COLOR_WHITE, -1);
-    init_pair(MENU_COLOR_PAIR, COLOR_WHITE, COLOR_BLUE);
+    Tui::Init();
 
     // Tracks time passed for updates.
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
@@ -114,17 +75,16 @@ int main()
         using namespace std::chrono;
         now = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
         milliseconds elapsed = now - prev;
-        
+
         if(elapsed > milliseconds(50))
         {
-            clear();
             c.displayClock();
             if(showMenu)
             {
                 menu.displayMenu();
             }
-            
-            refresh();
+
+            Tui::Refresh();
             prev = now;
         }
         else
@@ -133,7 +93,7 @@ int main()
             std::this_thread::sleep_for(milliseconds(50));
         }
 
-        int ch = getch();
+        int ch = Tui::Input::GetChar();
         if(!moveInner)
         {
             switch(ch)
@@ -159,19 +119,20 @@ int main()
             int x = 0;
             switch(ch)
             {
-                case KEY_UP:
+                using namespace Tui::Input;
+                case static_cast<int>(Keys::UP):
                     y = c.getFrameY();
                     c.moveFrame(--y, c.getFrameX());
                     break;
-                case KEY_DOWN:
+                case static_cast<int>(Keys::DOWN):
                     y = c.getFrameY();
                     c.moveFrame(++y, c.getFrameX());
                     break;
-                case KEY_LEFT:
+                case static_cast<int>(Keys::LEFT):
                     x = c.getFrameX();
                     c.moveFrame(c.getFrameY(), --x);
                     break;
-                case KEY_RIGHT:
+                case static_cast<int>(Keys::RIGHT):
                     x = c.getFrameX();
                     c.moveFrame(c.getFrameY(), ++x);
                     break;
@@ -188,6 +149,6 @@ int main()
         }
     }
 
-    endwin();
+    Tui::Close();
     return 0;
 }

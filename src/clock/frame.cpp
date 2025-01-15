@@ -1,5 +1,5 @@
 #include "frame.hpp"
-#include <ncurses.h>
+#include "../tui/tui.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -14,11 +14,11 @@ void Frame::constructDefault()
 
     height = Digit::DEF_ROW;
     width = Digit::DEF_COL*4 + 1;
- 
-    separator.push_back(' ');
-    separator.push_back('.');
-    separator.push_back('.');
-    
+
+    separator.push_back(" ");
+    separator.push_back(".");
+    separator.push_back(".");
+
     updateTime();
 }
 Frame::Frame()
@@ -53,7 +53,7 @@ Frame::Frame(std::string filename)
             bool fail = false;
             for(size_t i = 0; !fail && i < NUMDIG; i++)
             {
-                std::vector<std::vector<char>> asciiDig;
+                std::vector<std::string> asciiDig;
                 std::string line;
                 for(size_t j = 0; !fail && j < row && std::getline(inFile,line); j++)
                 {
@@ -65,11 +65,7 @@ Frame::Frame(std::string filename)
                     }
                     else
                     {
-                        asciiDig.push_back(std::vector<char>());
-                        for(size_t k = 0; k < col; k++)
-                        {
-                            asciiDig.at(j).push_back(line.at(k));
-                        }
+                        asciiDig.push_back(line);
                     }
                 }
 
@@ -89,10 +85,10 @@ Frame::Frame(std::string filename)
             {
                 height = row;
                 width = col*4 + 1;
-                separator.push_back(' ');
-                separator.push_back('.');
-                separator.push_back('.');
-    
+                separator.push_back(" ");
+                separator.push_back(".");
+                separator.push_back(".");
+
                 updateTime();
             }
         }
@@ -130,18 +126,7 @@ void Frame::updateTime()
 
 void Frame::printSeparator()
 {
-    //init_pair(1, COLOR_WHITE, -1);
-    //attron(COLOR_PAIR(1));
-    int y, x;
-    getyx(stdscr, y, x);
-    for(size_t i = 0; i < separator.size(); i++)
-    {
-       char sstr[] = {separator[i], '\0'};
-       mvprintw(y + i, x, sstr); 
-    }
-
-    move(y, x + 1);
-    //attroff(COLOR_PAIR(1));
+    Tui::DisplayMessages(separator, 1, 0);
 }
 
 void Frame::printTime()
@@ -188,9 +173,9 @@ void Frame::printTime()
     }
     else
     {
-        int y, x;
-        getyx(stdscr, y, x);
-        move(y, x + Digit::DEF_COL);
+
+        auto [x, y] = Tui::GetXY();
+        Tui::Move(x + Digit::DEF_COL, y);
     }
 
     digits[hour].printDig();

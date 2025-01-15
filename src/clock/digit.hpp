@@ -1,7 +1,7 @@
 #ifndef DIGIT_H
 #define DIGIT_H
 
-#include <ncurses.h>
+#include <string>
 #include <vector>
 
 /**
@@ -15,7 +15,7 @@ class Digit
     private:
         /* Member variables */
         size_t row, col;
-        char** dig;
+        std::vector<std::string> dig;
         int color;
 
     public:
@@ -23,13 +23,18 @@ class Digit
         static const int DEF_COLOR = 2;
         static const size_t DEF_ROW = 3;
         static const size_t DEF_COL = 3;
-        static const char ASCII_ZERO[DEF_ROW][DEF_COL + 1],
-        ASCII_ONE[DEF_ROW][DEF_COL + 1],ASCII_TWO[DEF_ROW][DEF_COL + 1],
-        ASCII_THREE[DEF_ROW][DEF_COL + 1],ASCII_FOUR[DEF_ROW][DEF_COL + 1],
-        ASCII_FIVE[DEF_ROW][DEF_COL + 1],ASCII_SIX[DEF_ROW][DEF_COL + 1],
-        ASCII_SEVEN[DEF_ROW][DEF_COL + 1],ASCII_EIGHT[DEF_ROW][DEF_COL + 1],
-        ASCII_NINE[DEF_ROW][DEF_COL + 1];
-        
+        static const std::vector<std::string>
+            ASCII_ZERO,
+            ASCII_ONE,
+            ASCII_TWO,
+            ASCII_THREE,
+            ASCII_FOUR,
+            ASCII_FIVE,
+            ASCII_SIX,
+            ASCII_SEVEN,
+            ASCII_EIGHT,
+            ASCII_NINE;
+
        /**
         * Default constructor constructs an
         * ASCII_ZERO digit.
@@ -52,13 +57,13 @@ class Digit
          * @param color - Initial color of the digit.
          */
         Digit(int val, int color);
-       
+
        /**
         * Constructs an ASCII art digit from a vector.
         *
         * @param vec - The 2D vector representing the digit.
         */
-        Digit(std::vector<std::vector<char>>& vec);
+        Digit(std::vector<std::string>& vec);
 
         /**
          * Constructs an ASCII art digit from a vector.
@@ -66,7 +71,7 @@ class Digit
          * @param vec - The 2D vector representing the digit.
          * @param color - The initial color of the digit.
          */
-         Digit(std::vector<std::vector<char>>& vec, int color); 
+         Digit(std::vector<std::string>& vec, int color);
 
         /**
          * Copy constructor for Digit.
@@ -99,9 +104,9 @@ class Digit
          * initialized for this to work.
          */
         void printDig();
-       
+
         /* Getter Methods */
-        
+
         /**
          * Returns row.
          *
