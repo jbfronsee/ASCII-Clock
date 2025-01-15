@@ -1,5 +1,9 @@
 #include "tui.hpp"
-#include <ncurses.h>
+
+int Tui::Input::GetChar()
+{
+    return getch();
+}
 
 void Tui::Init()
 {

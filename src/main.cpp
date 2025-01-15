@@ -1,7 +1,6 @@
 #include "tui/tui.hpp"
 #include "clock/clock.hpp"
 #include "menu/clockMenu.hpp"
-#include <ncurses.h> //TODO clean up getch and get rid of this
 #include <chrono>
 #include <thread>
 #include <fstream>
@@ -94,7 +93,7 @@ int main()
             std::this_thread::sleep_for(milliseconds(50));
         }
 
-        int ch = getch();
+        int ch = Tui::Input::GetChar();
         if(!moveInner)
         {
             switch(ch)
@@ -120,19 +119,20 @@ int main()
             int x = 0;
             switch(ch)
             {
-                case KEY_UP:
+                using namespace Tui::Input;
+                case static_cast<int>(Keys::UP):
                     y = c.getFrameY();
                     c.moveFrame(--y, c.getFrameX());
                     break;
-                case KEY_DOWN:
+                case static_cast<int>(Keys::DOWN):
                     y = c.getFrameY();
                     c.moveFrame(++y, c.getFrameX());
                     break;
-                case KEY_LEFT:
+                case static_cast<int>(Keys::LEFT):
                     x = c.getFrameX();
                     c.moveFrame(c.getFrameY(), --x);
                     break;
-                case KEY_RIGHT:
+                case static_cast<int>(Keys::RIGHT):
                     x = c.getFrameX();
                     c.moveFrame(c.getFrameY(), ++x);
                     break;

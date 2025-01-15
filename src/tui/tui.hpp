@@ -1,11 +1,26 @@
 #ifndef TUI_H
 #define TUI_H
+
 #include <string>
 #include <vector>
 #include <optional>
+#include <ncurses.h>
 
 namespace Tui
 {
+    namespace Input
+    {
+        enum class Keys
+        {
+            UP = KEY_UP,
+            DOWN = KEY_DOWN,
+            LEFT = KEY_LEFT,
+            RIGHT = KEY_RIGHT
+        };
+
+        int GetChar();
+    }
+
     void Init();
 
     void Close();
