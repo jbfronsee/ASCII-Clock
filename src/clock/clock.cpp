@@ -15,12 +15,11 @@ const std::vector<std::string> Clock::DEFAULT = {
 
 void Clock::constructDefault()
 {
-    height = DEFAULT_H;
-    width = DEFAULT_W;
-    starty = DEFAULT_YSTART;
-    startx = DEFAULT_XSTART;
-
-    outer = DEFAULT;
+    mHeight = DEFAULT_H;
+    mWidth = DEFAULT_W;
+    mStartY = DEFAULT_YSTART;
+    mStartX = DEFAULT_XSTART;
+    mOuter = DEFAULT;
 }
 
 Clock::Clock()
@@ -36,14 +35,14 @@ Clock::Clock(std::string& filename)
         std::string header;
         std::getline(inFile, header);
         std::stringstream headStream(header);
-        if(!(headStream >> starty))
+        if(!(headStream >> mStartY))
         {
             //TODO: Error Message
             constructDefault();
             return;
         }
 
-        if(!(headStream >> startx))
+        if(!(headStream >> mStartX))
         {
             //TODO: Error Message
             constructDefault();
@@ -53,12 +52,12 @@ Clock::Clock(std::string& filename)
         std::vector<std::string> clockframe;
         std::string line;
         std::getline(inFile, line);
-        width = line.size();
+        mWidth = line.size();
         clockframe.push_back(line);
 
         while(std::getline(inFile, line))
         {
-            if(line.size() != width)
+            if(line.size() != mWidth)
             {
                 //TODO: Error message
                 constructDefault();
@@ -70,9 +69,9 @@ Clock::Clock(std::string& filename)
             }
         }
 
-        height = clockframe.size();
+        mHeight = clockframe.size();
 
-        outer = clockframe;
+        mOuter = clockframe;
     }
     else
     {
@@ -81,55 +80,25 @@ Clock::Clock(std::string& filename)
     }
 }
 
-Clock::Clock(const Clock& clock)
-{
-    this->height = clock.height;
-    this->width = clock.width;
-    this->starty = clock.starty;
-    this->startx = clock.startx;
-
-    outer = clock.outer;
-
-    this->inner = clock.inner;
-}
-
-Clock::~Clock()
-{
-}
-
-Clock& Clock::operator=(const Clock& clock)
-{
-    this->height = clock.height;
-    this->width = clock.width;
-    this->starty = clock.starty;
-    this->startx = clock.startx;
-
-    outer = clock.outer;
-
-    this->inner = clock.inner;
-
-    return *this;
-}
-
 int Clock::getFrameY()
 {
-    return starty;
+    return mStartY;
 }
 
 int Clock::getFrameX()
 {
-    return startx;
+    return mStartX;
 }
 
 void Clock::moveFrame(int y, int x)
 {
-    starty = y;
-    startx = x;
+    mStartY = y;
+    mStartX = x;
 }
 
 void Clock::switchFrame(std::string filename)
 {
-    inner = Frame(filename);
+    mInner = Frame(filename);
 }
 bool Clock::writeClock()
 {
@@ -138,10 +107,10 @@ bool Clock::writeClock()
     std::ofstream outFile("out.cf");
     if(outFile.is_open())
     {
-        outFile << starty << " " << startx << std::endl;
-        for(size_t i = 0; i < height; i++)
+        outFile << mStartY << " " << mStartX << std::endl;
+        for(size_t i = 0; i < mHeight; i++)
         {
-            outFile << outer[i] << std::endl;
+            outFile << mOuter[i] << std::endl;
         }
 
         success = true;
@@ -154,7 +123,7 @@ void Clock::displayClock()
 {
     Tui::Clear();
     // Center the clock in the terminal
-    Tui::Move((Tui::Cols() - width)/2, (Tui::Lines() - height)/2);
-    Tui::DisplayMessages(outer, startx, starty);
-    inner.printTime();
+    Tui::Move((Tui::Cols() - mWidth)/2, (Tui::Lines() - mHeight)/2);
+    Tui::DisplayMessages(mOuter, mStartX, mStartY);
+    mInner.printTime();
 }

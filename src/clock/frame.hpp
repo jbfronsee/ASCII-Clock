@@ -16,13 +16,13 @@ class Frame
 {
     private:
         static const size_t NUMDIG = 10;
-        std::vector<Digit> digits;
+        std::vector<Digit> mDigits;
 
-        std::vector<std::string> separator;
-        std::tm* currTime;
+        std::vector<std::string> mSeparator;
+        std::tm* mCurrTime;
 
-        size_t height;
-        size_t width;
+        size_t mHeight;
+        size_t mWidth;
 
         /**
          * Constructs default frame.
@@ -52,12 +52,6 @@ class Frame
          * @param filename of file to read from
          */
         Frame(std::string filename);
-        /* These three aren't necessary for now. */
-        Frame(const Frame& clock);
-
-        ~Frame();
-
-        Frame& operator=(const Frame& clock);
 
         /**
          * Prints the current time of clock frame.

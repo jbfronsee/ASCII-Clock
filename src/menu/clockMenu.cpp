@@ -3,41 +3,41 @@
 
 void ClockMenu::refreshMenu()
 {
-    height = 1;
-    width = Tui::Cols();
-    y = Tui::Lines() - 1;
-    x = 0;
+    mHeight = 1;
+    mWidth = Tui::Cols();
+    mY = Tui::Lines() - 1;
+    mX = 0;
 }
 
 ClockMenu::ClockMenu(int color)
-    : m_color(color)
+    : mColor(color)
 {
     refreshMenu();
 
-    messages.push_back("q: Quit | h: Hide Menu | m: Move inner frame");
-    messages.push_back("m: Main Menu | s: Save to out.cf | Use the arrow keys to move frame");
-    currMessage = 0;
+    mMessages.push_back("q: Quit | h: Hide Menu | m: Move inner frame");
+    mMessages.push_back("m: Main Menu | s: Save to out.cf | Use the arrow keys to move frame");
+    mCurrMessage = 0;
 }
 
 void ClockMenu::displayMenu()
 {
     refreshMenu();
 
-    std::string message = messages[currMessage];
+    std::string message = mMessages[mCurrMessage];
 
-    if (width > message.size())
+    if (mWidth > message.size())
     {
-        message.append(width - message.size(), ' ');
+        message.append(mWidth - message.size(), ' ');
     }
 
-    Tui::DisplayMessage(x, y, message, m_color);
+    Tui::DisplayMessage(mX, mY, message, mColor);
 }
 
 bool ClockMenu::changeMessage(size_t index)
 {
-    if(index >= messages.size())
+    if(index >= mMessages.size())
         return false;
 
-    currMessage = index;
+    mCurrMessage = index;
     return true;
 }

@@ -7,4 +7,4 @@ Works on Linux with ncurses installed.
 ### make 
 
 ## Run with:
-### ./clock
+### ./bin/clock
