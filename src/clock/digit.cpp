@@ -1,5 +1,4 @@
 #include "digit.hpp"
-#include "../tui/tui.hpp"
 
 const std::vector<std::string> Digit::ASCII_ZERO = {
     " _ ",
@@ -61,14 +60,10 @@ const std::vector<std::string> Digit::ASCII_NINE = {
     "  |"
 };
 
-Digit::Digit() : Digit(0) { }
-
-Digit::Digit(int val) : Digit(val, DEF_COLOR) { }
-
-Digit::Digit(int val, int color)
+Digit::Digit(int val, Tui::ColorPairs color)
 {
     // ncurses colors go from 1 - 8.
-    if(color < 1 || color > 8)
+    if(color == Tui::ColorPairs::DEFAULT)
     {
         color = DEF_COLOR;
     }
@@ -119,11 +114,9 @@ Digit::Digit(int val, int color)
     mColor = color;
 }
 
-Digit::Digit(std::vector<std::string>& vec) : Digit(vec, DEF_COLOR) { }
-
-Digit::Digit(std::vector<std::string>& vec, int color)
+Digit::Digit(std::vector<std::string>& vec, Tui::ColorPairs color)
 {
-    if(color < 1 || color > 8)
+    if(color == Tui::ColorPairs::DEFAULT)
     {
         color = DEF_COLOR;
     }
@@ -136,13 +129,8 @@ Digit::Digit(std::vector<std::string>& vec, int color)
     mColor = color;
 }
 
-void Digit::setColor(int color)
+void Digit::setColor(Tui::ColorPairs color)
 {
-    if(color < 1 || color > 8)
-    {
-        color = DEF_COLOR;
-    }
-
     mColor = color;
 }
 
@@ -161,7 +149,7 @@ size_t Digit::getCol()
     return mCol;
 }
 
-int Digit::getColor()
+Tui::ColorPairs Digit::getColor()
 {
     return mColor;
 }

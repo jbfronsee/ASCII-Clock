@@ -12,8 +12,6 @@
  */
 int main()
 {
-    const int MENU_COLOR_PAIR = 9;
-
     bool readClock = false, readDigit = false;
     std::string clockFname, digitFname;
     std::ifstream inFile("clock.conf");
@@ -55,7 +53,7 @@ int main()
     std::chrono::milliseconds prev = now;
 
     Clock c;
-    ClockMenu menu(MENU_COLOR_PAIR);
+    ClockMenu menu(Tui::ColorPairs::MENU);
 
     if(readClock)
     {

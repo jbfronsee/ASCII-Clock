@@ -108,7 +108,7 @@ void Frame::updateTime()
 
 void Frame::printSeparator()
 {
-    Tui::DisplayMessages(mSeparator, 1, 0);
+    Tui::DisplayMessages(mSeparator, 1, 0, Tui::ColorPairs::RED);
 }
 
 void Frame::printTime()
