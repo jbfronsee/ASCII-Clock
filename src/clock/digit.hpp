@@ -14,9 +14,9 @@ class Digit
 {
     private:
         /* Member variables */
-        size_t row, col;
-        std::vector<std::string> dig;
-        int color;
+        size_t mRow, mCol;
+        std::vector<std::string> mDig;
+        int mColor;
 
     public:
         /* Class constants */
@@ -72,25 +72,6 @@ class Digit
          * @param color - The initial color of the digit.
          */
          Digit(std::vector<std::string>& vec, int color);
-
-        /**
-         * Copy constructor for Digit.
-         * 
-         * @param digit - Digit to copy.
-         */
-        Digit(const Digit& digit);
-
-        /**
-         * Destructor for Digit. Frees memory.
-         */
-        ~Digit();
-
-        /**
-         * Assignment operator for digit.
-         *
-         * @param digit - Digit to copy.
-         */
-        Digit& operator=(const Digit& digit);
 
         /**
          * Set color of Digit.

@@ -111,12 +111,12 @@ Digit::Digit(int val, int color)
 
 
     // Build the dig array with ASCII default.
-    row = DEF_ROW; 
-    col = DEF_COL;
+    mRow = DEF_ROW;
+    mCol = DEF_COL;
 
-    dig = arr;
+    mDig = arr;
 
-    this->color = color;
+    mColor = color;
 }
 
 Digit::Digit(std::vector<std::string>& vec) : Digit(vec, DEF_COLOR) { }
@@ -128,38 +128,12 @@ Digit::Digit(std::vector<std::string>& vec, int color)
         color = DEF_COLOR;
     }
 
-    row = vec.size();
-    col = vec.at(0).size();
+    mRow = vec.size();
+    mCol = vec.at(0).size();
 
-    dig = vec;
+    mDig = vec;
 
-    this->color = color;
-}
-
-Digit::Digit(const Digit& digit)
-{
-    this->row = digit.row;
-    this->col = digit.col;
-
-    this->dig = digit.dig;
-
-    this->color = digit.color;
-}
-
-Digit::~Digit()
-{
-
-}
-
-Digit& Digit::operator=(const Digit& digit)
-{
-    this->row = digit.row;
-    this->col = digit.col;
-
-    this->dig = digit.dig;
-    this->color = digit.color;
-
-    return *this;
+    mColor = color;
 }
 
 void Digit::setColor(int color)
@@ -169,25 +143,25 @@ void Digit::setColor(int color)
         color = DEF_COLOR;
     }
 
-    this->color = color;
+    mColor = color;
 }
 
 void Digit::printDig()
 {
-    Tui::DisplayMessages(dig, col, 0, color);
+    Tui::DisplayMessages(mDig, mCol, 0, mColor);
 }
 
 size_t Digit::getRow()
 {
-    return row;
+    return mRow;
 }
 
 size_t Digit::getCol()
 {
-    return col;
+    return mCol;
 }
 
 int Digit::getColor()
 {
-    return color;
+    return mColor;
 }

@@ -4,25 +4,21 @@
 class ClockMenu
 {
     private:
-        size_t x, y, height, width;
-        int m_color;
-        std::vector<std::string> messages;
-        size_t currMessage;
+        size_t mX, mY, mHeight, mWidth;
+        int mColor;
+        std::vector<std::string> mMessages;
+        size_t mCurrMessage;
 
-        
         /**
          * Refreshes border in case of resize.
          */
         void refreshMenu();
-        
     public:
-
         /**
          * Construct menu object with
          * color pair specified by color.
          */
         ClockMenu(int color = 1);
-      
         /**
          * Display menu to screen.
          */

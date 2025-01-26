@@ -10,16 +10,16 @@
 class Clock
 {
     private:
-        size_t height, width;
-        int starty, startx;
-        std::vector<std::string> outer;
-        Frame inner;
+        size_t mHeight, mWidth;
+        int mStartY, mStartX;
+        std::vector<std::string> mOuter;
+        Frame mInner;
 
         /**
          * Helper function to call default constructor.
          */
         void constructDefault();
-    
+
     public:
         static const size_t DEFAULT_H = 5;
         static const size_t DEFAULT_W = 19;
@@ -38,21 +38,6 @@ class Clock
          * @param filename - The name of the file to read from.
          */
         Clock(std::string& filename);
-
-        /**
-         * Copy constructor.
-         */
-        Clock(const Clock& clock);
-
-        /**
-         * Destructor.
-         */
-        ~Clock();
-
-        /**
-         * Copy assignment.
-         */
-        Clock& operator=(const Clock& clock);
 
         /**
          * Returns current Y coordinate of frame.
@@ -83,7 +68,7 @@ class Clock
          * @return true if successful false otherwise
          */
         bool writeClock();
-        
+
         /**
          * Displays the clock on screen with
          * ncurses.

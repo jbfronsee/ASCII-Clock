@@ -9,15 +9,15 @@ void Frame::constructDefault()
     // Initialize array of digits.
     for(size_t i = 0; i < NUMDIG; i++)
     {
-        digits.push_back(Digit(i));
+        mDigits.push_back(Digit(i));
     }
 
-    height = Digit::DEF_ROW;
-    width = Digit::DEF_COL*4 + 1;
+    mHeight = Digit::DEF_ROW;
+    mWidth = Digit::DEF_COL*4 + 1;
 
-    separator.push_back(" ");
-    separator.push_back(".");
-    separator.push_back(".");
+    mSeparator.push_back(" ");
+    mSeparator.push_back(".");
+    mSeparator.push_back(".");
 
     updateTime();
 }
@@ -77,17 +77,17 @@ Frame::Frame(std::string filename)
                 }
                 else
                 {
-                    digits.push_back(Digit(asciiDig));
+                    mDigits.push_back(Digit(asciiDig));
                 }
             }
 
             if(!fail)
             {
-                height = row;
-                width = col*4 + 1;
-                separator.push_back(" ");
-                separator.push_back(".");
-                separator.push_back(".");
+                mHeight = row;
+                mWidth = col*4 + 1;
+                mSeparator.push_back(" ");
+                mSeparator.push_back(".");
+                mSeparator.push_back(".");
 
                 updateTime();
             }
@@ -99,34 +99,16 @@ Frame::Frame(std::string filename)
         constructDefault();
     }
 }
-Frame::Frame(const Frame& frame)
-{
-    this->digits = frame.digits;
-    this->separator = frame.separator;
-    this->currTime = frame.currTime;
-}
-
-Frame::~Frame()
-{
-}
-
-Frame& Frame::operator=(const Frame& frame)
-{
-    this->digits = frame.digits;
-    this->separator = frame.separator;
-    this->currTime = frame.currTime;
-    return *this;
-}
 
 void Frame::updateTime()
 {
     time_t t = std::time(0);
-    currTime = std::localtime(&t);
+    mCurrTime = std::localtime(&t);
 }
 
 void Frame::printSeparator()
 {
-    Tui::DisplayMessages(separator, 1, 0);
+    Tui::DisplayMessages(mSeparator, 1, 0);
 }
 
 void Frame::printTime()
@@ -135,20 +117,20 @@ void Frame::printTime()
 
     // Reformat time.
     int hour;
-    if(currTime->tm_hour > 12)
+    if(mCurrTime->tm_hour > 12)
     {
-        hour = currTime->tm_hour - 12;
+        hour = mCurrTime->tm_hour - 12;
     }
-    else if(currTime->tm_hour == 0)
+    else if(mCurrTime->tm_hour == 0)
     {
         hour = 12;
     }
     else
     {
-        hour = currTime->tm_hour;
+        hour = mCurrTime->tm_hour;
     }
 
-    int min = currTime->tm_min;
+    int min = mCurrTime->tm_min;
 
     // Get digits from time.
     int mLSB = min % 10;
@@ -169,7 +151,7 @@ void Frame::printTime()
     // Print digits to console.
     if(len == 2)
     {
-        digits[1].printDig();
+        mDigits[1].printDig();
     }
     else
     {
@@ -178,18 +160,18 @@ void Frame::printTime()
         Tui::Move(x + Digit::DEF_COL, y);
     }
 
-    digits[hour].printDig();
+    mDigits[hour].printDig();
 
     printSeparator();
 
-    digits[mMSB].printDig();
+    mDigits[mMSB].printDig();
 
-    digits[mLSB].printDig();
+    mDigits[mLSB].printDig();
 }
 
 void Frame::printDigits()
 {
-    for(Digit d: digits)
+    for(Digit d: mDigits)
     {
         d.printDig();
     }
