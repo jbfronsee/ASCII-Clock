@@ -11,6 +11,7 @@ Config::Opts& Config::SetOpts(const std::map<std::string, std::string> settings,
     // typeid returns ref to std::type_info but we need something that can
     // be constructed for std::pair so we can use std::type_index
     std::map<std::string, std::pair<std::any, std::type_index>> setting_map = {
+        {"auto_hide", {&opts.autoHide, std::type_index(typeid(opts.autoHide))}},
         {"read_clock", {&opts.readClock, std::type_index(typeid(opts.readClock))}},
         {"read_clock_file", {&opts.clockFile, std::type_index(typeid(opts.clockFile))}},
         {"read_digit", {&opts.readDigit, std::type_index(typeid(opts.readDigit))}},

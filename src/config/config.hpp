@@ -10,11 +10,15 @@ namespace Config
 {
     struct Opts
     {
+        //TODO
         Opts()
-        : readClock(false),
+        : autoHide(false),
+          readClock(false),
           readDigit(false),
           clockColor(Tui::ColorPairs::DEFAULT),
           digitsColor(Tui::ColorPairs::DEFAULT) {}
+
+        bool autoHide;
 
         bool readClock;
         std::string clockFile;

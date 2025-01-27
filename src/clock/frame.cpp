@@ -22,6 +22,7 @@ void Frame::constructDefault(Tui::ColorPairs color)
 }
 
 Frame::Frame(std::string filename, Tui::ColorPairs color)
+    : mColor(color)
 {
     if (filename.empty())
     {
@@ -109,7 +110,7 @@ void Frame::updateTime()
 
 void Frame::printSeparator()
 {
-    Tui::DisplayMessages(mSeparator, 1, 0, Tui::ColorPairs::RED);
+    Tui::DisplayMessages(mSeparator, 1, 0, mColor);
 }
 
 void Frame::printTime()

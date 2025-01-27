@@ -25,6 +25,8 @@ class Frame
         size_t mHeight;
         size_t mWidth;
 
+        Tui::ColorPairs mColor;
+
         /**
          * Constructs default frame.
          */

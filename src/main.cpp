@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     }
 
     bool run = true;
-    bool showMenu = true;
+    bool showMenu = !opts.autoHide;
     bool moveInner = false;
     while(run)
     {
@@ -105,6 +105,9 @@ int main(int argc, char* argv[])
                 case 'm':
                     moveInner = false;
                     menu.changeMessage(0);
+                    break;
+                case 'q':
+                    run = false;
                     break;
                 case 's':
                     c.writeClock();
