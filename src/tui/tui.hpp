@@ -34,7 +34,7 @@ namespace Tui
         MENU = 9
     };
 
-    ColorPairs asColor(const std::string& colorStr);
+    ColorPairs AsColor(const std::string& colorStr);
 
     void Init();
 
@@ -59,8 +59,8 @@ namespace Tui
 
     void DisplayMessages(
       const std::vector<std::string>& message,
-      const int add_x,
-      const int add_y,
+      const int addX,
+      const int addY,
       const Tui::ColorPairs color = Tui::ColorPairs::DEFAULT
     );
 

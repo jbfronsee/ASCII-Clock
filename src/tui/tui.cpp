@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <map>
-#include <iostream>
 
 #include "tui.hpp"
 
@@ -9,7 +8,7 @@ int Tui::Input::GetChar()
     return getch();
 }
 
-Tui::ColorPairs Tui::asColor(const std::string& colorStr)
+Tui::ColorPairs Tui::AsColor(const std::string& colorStr)
 {
     //std::cout << "Color: " << colorStr << std::endl;
     std::map<std::string, Tui::ColorPairs> mapping = {
@@ -27,8 +26,6 @@ Tui::ColorPairs Tui::asColor(const std::string& colorStr)
     std::transform(colorStr.cbegin(), colorStr.cend(), back_inserter(asUpper),
         [] (const char c) { return std::toupper(c); }
     );
-
-    //std::cout << "Upper: " << asUpper << std::endl;
 
     if (mapping.contains(asUpper))
         return mapping[asUpper];
@@ -117,12 +114,11 @@ void Tui::DisplayMessage(
 
 void Tui::DisplayMessages(
     const std::vector<std::string>& messages,
-    const int add_x,
-    const int add_y,
+    const int addX,
+    const int addY,
     const Tui::ColorPairs color
 )
 {
-    //std::cout << "color: " << std::to_string(static_cast<short>(color));
     if (color != Tui::ColorPairs::DEFAULT)
     {
         attron(COLOR_PAIR(static_cast<short>(color)));
@@ -137,7 +133,7 @@ void Tui::DisplayMessages(
         i++;
     }
 
-    Move(x + add_x, y + add_y);
+    Move(x + addX, y + addY);
 
     if (color != Tui::ColorPairs::DEFAULT)
     {

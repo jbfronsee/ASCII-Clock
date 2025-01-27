@@ -1,60 +1,18 @@
-#include "tui/tui.hpp"
 #include "clock/clock.hpp"
+#include "config/config.hpp"
 #include "menu/clockMenu.hpp"
+#include "tui/tui.hpp"
+
 #include <chrono>
 #include <thread>
-#include <fstream>
-#include <sstream>
-#include  <iostream>
 
 /**
  * Main contains the main loop for clock.
  * Displays the current time with ASCII art.
  */
-int main()
+int main(int argc, char* argv[])
 {
-    bool readClock = false, readDigit = false;
-    std::string clockFname, digitFname;
-    std::string clockColorStr, digitsColorStr;
-    std::ifstream inFile("clock.conf");
-    if(inFile.is_open())
-    {
-
-        std::string line;
-
-        while(std::getline(inFile, line))
-        {
-            std::stringstream lineStream(line);
-
-            std::string s1;
-            lineStream >> s1;
-
-            if(s1 == "read_clock")
-            {
-                lineStream >> readClock;
-            }
-            else if(s1 == "read_clock_file")
-            {
-                lineStream >> clockFname;
-            }
-            else if(s1 == "read_digit")
-            {
-                lineStream >> readDigit;
-            }
-            else if(s1 == "read_digit_file")
-            {
-                lineStream >> digitFname;
-            }
-            else if(s1 == "clock_color")
-            {
-                lineStream >> clockColorStr;
-            }
-            else if(s1 == "digits_color")
-            {
-                lineStream >> digitsColorStr;
-            }
-        }
-    }
+    Config::Opts opts = Config::GetOpts(std::vector<std::string>(argv, argv + argc));
 
     Tui::Init();
 
@@ -62,20 +20,17 @@ int main()
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     std::chrono::milliseconds prev = now;
 
-    Tui::ColorPairs clockColor = Tui::asColor(clockColorStr);
-    Tui::ColorPairs digitsColor = Tui::asColor(digitsColorStr);
-
-    Clock c("", clockColor, digitsColor);
+    Clock c("", opts.clockColor, opts.digitsColor);
     ClockMenu menu(Tui::ColorPairs::MENU);
 
-    if(readClock)
+    if(opts.readClock)
     {
-        c = Clock(clockFname, clockColor, digitsColor);
+        c = Clock(opts.clockFile, opts.clockColor, opts.digitsColor);
     }
 
-    if(readDigit)
+    if(opts.readDigit)
     {
-        c.switchFrame(digitFname, digitsColor);
+        c.switchFrame(opts.digitFile, opts.digitsColor);
     }
 
     bool run = true;
