@@ -5,6 +5,7 @@
 #include <thread>
 #include <fstream>
 #include <sstream>
+#include  <iostream>
 
 /**
  * Main contains the main loop for clock.
@@ -14,6 +15,7 @@ int main()
 {
     bool readClock = false, readDigit = false;
     std::string clockFname, digitFname;
+    std::string clockColorStr, digitsColorStr;
     std::ifstream inFile("clock.conf");
     if(inFile.is_open())
     {
@@ -43,6 +45,14 @@ int main()
             {
                 lineStream >> digitFname;
             }
+            else if(s1 == "clock_color")
+            {
+                lineStream >> clockColorStr;
+            }
+            else if(s1 == "digits_color")
+            {
+                lineStream >> digitsColorStr;
+            }
         }
     }
 
@@ -52,17 +62,20 @@ int main()
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     std::chrono::milliseconds prev = now;
 
-    Clock c;
+    Tui::ColorPairs clockColor = Tui::asColor(clockColorStr);
+    Tui::ColorPairs digitsColor = Tui::asColor(digitsColorStr);
+
+    Clock c("", clockColor, digitsColor);
     ClockMenu menu(Tui::ColorPairs::MENU);
 
     if(readClock)
     {
-        c = Clock(clockFname);
+        c = Clock(clockFname, clockColor, digitsColor);
     }
 
     if(readDigit)
     {
-        c.switchFrame(digitFname);
+        c.switchFrame(digitFname, digitsColor);
     }
 
     bool run = true;

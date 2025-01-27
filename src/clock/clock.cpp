@@ -1,5 +1,4 @@
 #include "clock.hpp"
-#include "../tui/tui.hpp"
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -22,13 +21,15 @@ void Clock::constructDefault()
     mOuter = DEFAULT;
 }
 
-Clock::Clock()
+Clock::Clock(const std::string& filename, Tui::ColorPairs color, Tui::ColorPairs dig_color)
+    : mColor(color), mInner("", dig_color)
 {
-    constructDefault();
-}
+    if (filename.empty())
+    {
+        constructDefault();
+        return;
+    }
 
-Clock::Clock(std::string& filename)
-{
     std::ifstream inFile(filename);
     if(inFile.is_open())
     {
@@ -96,9 +97,9 @@ void Clock::moveFrame(int y, int x)
     mStartX = x;
 }
 
-void Clock::switchFrame(std::string filename)
+void Clock::switchFrame(std::string filename, Tui::ColorPairs color)
 {
-    mInner = Frame(filename);
+    mInner = Frame(filename, color);
 }
 bool Clock::writeClock()
 {
@@ -124,6 +125,6 @@ void Clock::displayClock()
     Tui::Clear();
     // Center the clock in the terminal
     Tui::Move((Tui::Cols() - mWidth)/2, (Tui::Lines() - mHeight)/2);
-    Tui::DisplayMessages(mOuter, mStartX, mStartY);
+    Tui::DisplayMessages(mOuter, mStartX, mStartY, mColor);
     mInner.printTime();
 }

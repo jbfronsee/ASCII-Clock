@@ -34,6 +34,8 @@ namespace Tui
         MENU = 9
     };
 
+    ColorPairs asColor(const std::string& colorStr);
+
     void Init();
 
     void Close();

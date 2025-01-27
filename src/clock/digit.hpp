@@ -52,7 +52,7 @@ class Digit
          * @param vec - The 2D vector representing the digit.
          * @param color - The initial color of the digit.
          */
-         Digit(std::vector<std::string>& vec, Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
+        Digit(std::vector<std::string>& vec, Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
 
         /**
          * Set color of Digit.

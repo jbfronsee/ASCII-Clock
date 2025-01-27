@@ -3,6 +3,7 @@
 
 #include <string>
 #include "frame.hpp"
+#include "../tui/tui.hpp"
 
 /**
  * Outer frame of clock.
@@ -13,6 +14,7 @@ class Clock
         size_t mHeight, mWidth;
         int mStartY, mStartX;
         std::vector<std::string> mOuter;
+        Tui::ColorPairs mColor;
         Frame mInner;
 
         /**
@@ -28,16 +30,15 @@ class Clock
         static const int DEFAULT_XSTART = 3;
 
         /**
-         * Constructor uses default frame.
-         */
-        Clock();
-
-        /**
          * Read the clock contents from a file.
          * 
          * @param filename - The name of the file to read from.
          */
-        Clock(std::string& filename);
+        Clock(
+            const std::string& filename = "",
+            Tui::ColorPairs color = Tui::ColorPairs::DEFAULT,
+            Tui::ColorPairs dig_color = Tui::ColorPairs::DEFAULT
+        );
 
         /**
          * Returns current Y coordinate of frame.
@@ -61,7 +62,7 @@ class Clock
          *
          * @param filename to read frame data from
          */
-        void switchFrame(std::string filename);
+        void switchFrame(std::string filename, Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
         /**
          * Writes the clock data to out.cf
          *

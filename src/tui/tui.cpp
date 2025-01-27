@@ -1,8 +1,39 @@
+#include <algorithm>
+#include <map>
+#include <iostream>
+
 #include "tui.hpp"
 
 int Tui::Input::GetChar()
 {
     return getch();
+}
+
+Tui::ColorPairs Tui::asColor(const std::string& colorStr)
+{
+    //std::cout << "Color: " << colorStr << std::endl;
+    std::map<std::string, Tui::ColorPairs> mapping = {
+        { "BLACK", Tui::ColorPairs::BLACK },
+        { "RED", Tui::ColorPairs::RED },
+        { "GREEN", Tui::ColorPairs::GREEN },
+        { "YELLOW", Tui::ColorPairs::YELLOW },
+        { "BLUE", Tui::ColorPairs::BLUE },
+        { "MAGENTA", Tui::ColorPairs::MAGENTA },
+        { "CYAN", Tui::ColorPairs::CYAN },
+        { "WHITE", Tui::ColorPairs::WHITE }
+    };
+
+    std::string asUpper;
+    std::transform(colorStr.cbegin(), colorStr.cend(), back_inserter(asUpper),
+        [] (const char c) { return std::toupper(c); }
+    );
+
+    //std::cout << "Upper: " << asUpper << std::endl;
+
+    if (mapping.contains(asUpper))
+        return mapping[asUpper];
+    else
+        return Tui::ColorPairs::DEFAULT;
 }
 
 void Tui::Init()
@@ -91,6 +122,7 @@ void Tui::DisplayMessages(
     const Tui::ColorPairs color
 )
 {
+    //std::cout << "color: " << std::to_string(static_cast<short>(color));
     if (color != Tui::ColorPairs::DEFAULT)
     {
         attron(COLOR_PAIR(static_cast<short>(color)));

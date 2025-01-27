@@ -3,6 +3,6 @@ DIGIT0
 DIGIT1
 DIGIT2
 ...
-DIGIT10
+DIGIT9
 
 DIGIT is an nxm representation of a digit.

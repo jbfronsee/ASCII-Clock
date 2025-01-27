@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "digit.hpp"
+#include "../tui/tui.hpp"
 
 /**
  * @author Joshua Fronsee <jbfronsee@gmail.com>
@@ -27,7 +28,7 @@ class Frame
         /**
          * Constructs default frame.
          */
-        void constructDefault();
+        void constructDefault(Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
         /**
          * Update currTime to hold current time.
          */
@@ -40,18 +41,11 @@ class Frame
 
     public:
         /**
-         * Default constructor creates a
-         * frame with 10 ASCII digits from
-         * 0 - 9.
-         */
-        Frame();
-
-        /**
          * Construct frame with file.
          *
          * @param filename of file to read from
          */
-        Frame(std::string filename);
+        Frame(std::string filename = "", Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
 
         /**
          * Prints the current time of clock frame.
