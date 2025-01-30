@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <map>
+
 #include "tui.hpp"
 
 int Tui::Input::GetChar()
@@ -5,21 +8,33 @@ int Tui::Input::GetChar()
     return getch();
 }
 
-void Tui::Init()
+Tui::ColorPairs Tui::AsColor(const std::string& colorStr)
 {
-    enum ColorPairs
-    {
-        PAIR_BLACK = 1,
-        PAIR_RED = 2,
-        PAIR_GREEN = 3,
-        PAIR_YELLOW = 4,
-        PAIR_BLUE = 5,
-        PAIR_MAGENTA = 6,
-        PAIR_CYAN = 7,
-        PAIR_WHITE = 8,
-        PAIR_MENU = 9
+    //std::cout << "Color: " << colorStr << std::endl;
+    std::map<std::string, Tui::ColorPairs> mapping = {
+        { "BLACK", Tui::ColorPairs::BLACK },
+        { "RED", Tui::ColorPairs::RED },
+        { "GREEN", Tui::ColorPairs::GREEN },
+        { "YELLOW", Tui::ColorPairs::YELLOW },
+        { "BLUE", Tui::ColorPairs::BLUE },
+        { "MAGENTA", Tui::ColorPairs::MAGENTA },
+        { "CYAN", Tui::ColorPairs::CYAN },
+        { "WHITE", Tui::ColorPairs::WHITE }
     };
 
+    std::string asUpper;
+    std::transform(colorStr.cbegin(), colorStr.cend(), back_inserter(asUpper),
+        [] (const char c) { return std::toupper(c); }
+    );
+
+    if (mapping.contains(asUpper))
+        return mapping[asUpper];
+    else
+        return Tui::ColorPairs::DEFAULT;
+}
+
+void Tui::Init()
+{
     initscr();
     keypad(stdscr, TRUE);
     // Don't pause for user input.
@@ -39,15 +54,15 @@ void Tui::Init()
     // Set up colors.
     start_color();
     use_default_colors();
-    init_pair(PAIR_BLACK, COLOR_BLACK, -1);
-    init_pair(PAIR_RED, COLOR_RED, -1);
-    init_pair(PAIR_GREEN, COLOR_GREEN, -1);
-    init_pair(PAIR_YELLOW, COLOR_YELLOW, -1);
-    init_pair(PAIR_BLUE, COLOR_BLUE, -1);
-    init_pair(PAIR_MAGENTA, COLOR_MAGENTA, -1);
-    init_pair(PAIR_CYAN, COLOR_CYAN, -1);
-    init_pair(PAIR_WHITE, COLOR_WHITE, -1);
-    init_pair(PAIR_MENU, COLOR_WHITE, COLOR_BLUE);
+    init_pair(static_cast<short>(Tui::ColorPairs::BLACK), COLOR_BLACK, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::RED), COLOR_RED, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::GREEN), COLOR_GREEN, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::YELLOW), COLOR_YELLOW, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::BLUE), COLOR_BLUE, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::MAGENTA), COLOR_MAGENTA, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::CYAN), COLOR_CYAN, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::WHITE), COLOR_WHITE, -1);
+    init_pair(static_cast<short>(Tui::ColorPairs::MENU), COLOR_WHITE, COLOR_BLUE);
 }
 
 int Tui::Lines()
@@ -81,32 +96,32 @@ void Tui::DisplayMessage(
   const int x,
   const int y,
   const std::string& message,
-  const std::optional<int> color
+  const Tui::ColorPairs color
 )
 {
-    if (color)
+    if (color != Tui::ColorPairs::DEFAULT)
     {
-        attron(COLOR_PAIR(color.value()));
+        attron(COLOR_PAIR(static_cast<short>(color)));
     }
 
     mvprintw(y, x, "%s", message.c_str());
 
-    if (color)
+    if (color != Tui::ColorPairs::DEFAULT)
     {
-        attroff(COLOR_PAIR(color.value()));
+        attroff(COLOR_PAIR(static_cast<short>(color)));
     }
 }
 
 void Tui::DisplayMessages(
     const std::vector<std::string>& messages,
-    const int add_x,
-    const int add_y,
-    const std::optional<int> color
+    const int addX,
+    const int addY,
+    const Tui::ColorPairs color
 )
 {
-    if (color)
+    if (color != Tui::ColorPairs::DEFAULT)
     {
-        attron(COLOR_PAIR(color.value()));
+        attron(COLOR_PAIR(static_cast<short>(color)));
     }
 
     int y, x;
@@ -118,11 +133,11 @@ void Tui::DisplayMessages(
         i++;
     }
 
-    Move(x + add_x, y + add_y);
+    Move(x + addX, y + addY);
 
-    if (color)
+    if (color != Tui::ColorPairs::DEFAULT)
     {
-        attroff(COLOR_PAIR(color.value()));
+        attroff(COLOR_PAIR(static_cast<short>(color)));
     }
 }
 

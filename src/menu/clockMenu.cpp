@@ -1,5 +1,4 @@
 #include "clockMenu.hpp"
-#include "../tui/tui.hpp"
 
 void ClockMenu::refreshMenu()
 {
@@ -9,7 +8,7 @@ void ClockMenu::refreshMenu()
     mX = 0;
 }
 
-ClockMenu::ClockMenu(int color)
+ClockMenu::ClockMenu(const Tui::ColorPairs color)
     : mColor(color)
 {
     refreshMenu();

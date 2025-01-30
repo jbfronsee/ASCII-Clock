@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <optional>
 #include <ncurses.h>
 
 namespace Tui
@@ -20,6 +19,22 @@ namespace Tui
 
         int GetChar();
     }
+
+    enum class ColorPairs
+    {
+        DEFAULT = 0,
+        BLACK = 1,
+        RED = 2,
+        GREEN = 3,
+        YELLOW = 4,
+        BLUE = 5,
+        MAGENTA = 6,
+        CYAN = 7,
+        WHITE = 8,
+        MENU = 9
+    };
+
+    ColorPairs AsColor(const std::string& colorStr);
 
     void Init();
 
@@ -39,14 +54,14 @@ namespace Tui
       const int x,
       const int y,
       const std::string& message,
-      const std::optional<int> color = std::nullopt
+      const Tui::ColorPairs color = Tui::ColorPairs::DEFAULT
     );
 
     void DisplayMessages(
       const std::vector<std::string>& message,
-      const int add_x,
-      const int add_y,
-      const std::optional<int> color = std::nullopt
+      const int addX,
+      const int addY,
+      const Tui::ColorPairs color = Tui::ColorPairs::DEFAULT
     );
 
     // Refresh and dump contents to screen

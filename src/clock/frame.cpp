@@ -1,15 +1,14 @@
 #include "frame.hpp"
-#include "../tui/tui.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-void Frame::constructDefault()
+void Frame::constructDefault(Tui::ColorPairs color)
 {
     // Initialize array of digits.
     for(size_t i = 0; i < NUMDIG; i++)
     {
-        mDigits.push_back(Digit(i));
+        mDigits.push_back(Digit(i, color));
     }
 
     mHeight = Digit::DEF_ROW;
@@ -21,13 +20,16 @@ void Frame::constructDefault()
 
     updateTime();
 }
-Frame::Frame()
-{
-    constructDefault();
-}
 
-Frame::Frame(std::string filename)
+Frame::Frame(std::string filename, Tui::ColorPairs color)
+    : mColor(color)
 {
+    if (filename.empty())
+    {
+        constructDefault(color);
+        return;
+    }
+
     std::ifstream inFile(filename);
     if(inFile.is_open())
     {
@@ -77,7 +79,7 @@ Frame::Frame(std::string filename)
                 }
                 else
                 {
-                    mDigits.push_back(Digit(asciiDig));
+                    mDigits.push_back(Digit(asciiDig, color));
                 }
             }
 
@@ -108,7 +110,7 @@ void Frame::updateTime()
 
 void Frame::printSeparator()
 {
-    Tui::DisplayMessages(mSeparator, 1, 0);
+    Tui::DisplayMessages(mSeparator, 1, 0, mColor);
 }
 
 void Frame::printTime()

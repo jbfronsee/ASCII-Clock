@@ -1,52 +1,18 @@
-#include "tui/tui.hpp"
 #include "clock/clock.hpp"
+#include "config/config.hpp"
 #include "menu/clockMenu.hpp"
+#include "tui/tui.hpp"
+
 #include <chrono>
 #include <thread>
-#include <fstream>
-#include <sstream>
 
 /**
  * Main contains the main loop for clock.
  * Displays the current time with ASCII art.
  */
-int main()
+int main(int argc, char* argv[])
 {
-    const int MENU_COLOR_PAIR = 9;
-
-    bool readClock = false, readDigit = false;
-    std::string clockFname, digitFname;
-    std::ifstream inFile("clock.conf");
-    if(inFile.is_open())
-    {
-
-        std::string line;
-
-        while(std::getline(inFile, line))
-        {
-            std::stringstream lineStream(line);
-
-            std::string s1;
-            lineStream >> s1;
-
-            if(s1 == "read_clock")
-            {
-                lineStream >> readClock;
-            }
-            else if(s1 == "read_clock_file")
-            {
-                lineStream >> clockFname;
-            }
-            else if(s1 == "read_digit")
-            {
-                lineStream >> readDigit;
-            }
-            else if(s1 == "read_digit_file")
-            {
-                lineStream >> digitFname;
-            }
-        }
-    }
+    Config::Opts opts = Config::GetOpts(std::vector<std::string>(argv, argv + argc));
 
     Tui::Init();
 
@@ -54,21 +20,21 @@ int main()
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     std::chrono::milliseconds prev = now;
 
-    Clock c;
-    ClockMenu menu(MENU_COLOR_PAIR);
+    Clock c("", opts.clockColor, opts.digitsColor);
+    ClockMenu menu(Tui::ColorPairs::MENU);
 
-    if(readClock)
+    if(opts.readClock)
     {
-        c = Clock(clockFname);
+        c = Clock(opts.clockFile, opts.clockColor, opts.digitsColor);
     }
 
-    if(readDigit)
+    if(opts.readDigit)
     {
-        c.switchFrame(digitFname);
+        c.switchFrame(opts.digitFile, opts.digitsColor);
     }
 
     bool run = true;
-    bool showMenu = true;
+    bool showMenu = !opts.autoHide;
     bool moveInner = false;
     while(run)
     {
@@ -139,6 +105,9 @@ int main()
                 case 'm':
                     moveInner = false;
                     menu.changeMessage(0);
+                    break;
+                case 'q':
+                    run = false;
                     break;
                 case 's':
                     c.writeClock();

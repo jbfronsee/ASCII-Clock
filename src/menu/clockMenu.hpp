@@ -1,11 +1,16 @@
-#include <vector>
+#ifndef CLOCKMENU_H
+#define CLOCKMENU_H
+
 #include <string>
+#include <vector>
+
+#include "../tui/tui.hpp"
 
 class ClockMenu
 {
     private:
         size_t mX, mY, mHeight, mWidth;
-        int mColor;
+        Tui::ColorPairs mColor;
         std::vector<std::string> mMessages;
         size_t mCurrMessage;
 
@@ -18,7 +23,7 @@ class ClockMenu
          * Construct menu object with
          * color pair specified by color.
          */
-        ClockMenu(int color = 1);
+        ClockMenu(const Tui::ColorPairs color = Tui::ColorPairs::BLACK);
         /**
          * Display menu to screen.
          */
@@ -37,3 +42,5 @@ class ClockMenu
          */
        // std::vector<std::string>& getMessages();
 };
+
+#endif /* CLOCKMENU_H */
