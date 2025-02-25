@@ -1,11 +1,11 @@
-#ifndef FRAME_H
-#define FRAME_H
+#pragma once
 
 #include <ctime>
 #include <vector>
 #include <string>
+
 #include "digit.hpp"
-#include "../tui/tui.hpp"
+#include "../../tui/tui.hpp"
 
 /**
  * @author Joshua Fronsee <jbfronsee@gmail.com>
@@ -58,5 +58,3 @@ class DigitalDisplay
          */
         void printDigits();
 };
-
-#endif /* FRAME_H */

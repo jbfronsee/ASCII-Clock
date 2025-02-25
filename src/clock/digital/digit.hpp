@@ -1,10 +1,9 @@
-#ifndef DIGIT_H
-#define DIGIT_H
+#pragma once
 
 #include <string>
 #include <vector>
 
-#include "../tui/tui.hpp"
+#include "../../tui/tui.hpp"
 
 /**
  * @author Joshua Fronsee <jbfronsee@gmail.com>
@@ -90,5 +89,3 @@ class Digit
          */
         Tui::ColorPairs getColor();
 };
-
-#endif /* DIGIT_H */

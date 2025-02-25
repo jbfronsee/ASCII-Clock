@@ -1,9 +1,9 @@
-#ifndef CLOCK_H
-#define CLOCK_H
+#pragma once
 
 #include <string>
+
 #include "analog/analogDisplay.hpp"
-#include "frame.hpp"
+#include "digital/digitalDisplay.hpp"
 #include "../tui/tui.hpp"
 
 enum class ClockMode
@@ -87,5 +87,3 @@ class Clock
          */
         void displayClock();
 };
-
-#endif /* CLOCK_H */

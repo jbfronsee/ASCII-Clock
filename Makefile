@@ -3,8 +3,8 @@ CFLAGS = -g -std=c++20 -Wall
 
 LIBS = -lncurses
 
-bin/clock: bin/main.o bin/tui.o bin/config.o bin/clock.o bin/time.o bin/analogDisplay.o bin/clockMenu.o bin/frame.o bin/digit.o bin/
-	$(CC) -o bin/clock bin/main.o bin/tui.o bin/config.o bin/clock.o bin/time.o bin/analogDisplay.o bin/clockMenu.o bin/frame.o bin/digit.o $(CFLAGS) $(LIBS)
+bin/clock: bin/main.o bin/tui.o bin/config.o bin/clock.o bin/time.o bin/analogDisplay.o bin/clockMenu.o bin/digitalDisplay.o bin/digit.o bin/
+	$(CC) -o bin/clock bin/main.o bin/tui.o bin/config.o bin/clock.o bin/time.o bin/analogDisplay.o bin/clockMenu.o bin/digitalDisplay.o bin/digit.o $(CFLAGS) $(LIBS)
 	rm bin/*.o
 
 bin/main.o: src/main.cpp src/tui/tui.hpp src/config/config.hpp src/clock/clock.hpp src/menu/clockMenu.hpp bin/
@@ -28,14 +28,15 @@ bin/analogDisplay.o: src/clock/analog/analogDisplay.cpp src/clock/analog/analogD
 bin/clockMenu.o: src/menu/clockMenu.cpp src/menu/clockMenu.hpp bin/
 	$(CC) -c src/menu/clockMenu.cpp -o bin/clockMenu.o $(CFLAGS)
 
-bin/frame.o: src/clock/frame.cpp src/clock/frame.hpp bin/
-	$(CC) -c src/clock/frame.cpp -o bin/frame.o $(CFLAGS)
+bin/digitalDisplay.o: src/clock/digital/digitalDisplay.cpp src/clock/digital/digitalDisplay.hpp bin/
+	$(CC) -c src/clock/digital/digitalDisplay.cpp -o bin/digitalDisplay.o $(CFLAGS)
 
-bin/digit.o: src/clock/digit.cpp src/clock/digit.hpp bin/
-	$(CC) -c src/clock/digit.cpp -o bin/digit.o $(CFLAGS)
+bin/digit.o: src/clock/digital/digit.cpp src/clock/digital/digit.hpp bin/
+	$(CC) -c src/clock/digital/digit.cpp -o bin/digit.o $(CFLAGS)
 
 bin/:
 	mkdir bin
 
 clean:
-	rm bin/clock
+	rm -f bin/clock
+	rm -f bin/*.o

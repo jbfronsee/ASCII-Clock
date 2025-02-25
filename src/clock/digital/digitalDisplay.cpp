@@ -1,4 +1,5 @@
-#include "frame.hpp"
+#include "digitalDisplay.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
