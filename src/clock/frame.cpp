@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 
-void Frame::constructDefault(Tui::ColorPairs color)
+void DigitalDisplay::constructDefault(Tui::ColorPairs color)
 {
     // Initialize array of digits.
     for(size_t i = 0; i < NUMDIG; i++)
@@ -21,7 +21,7 @@ void Frame::constructDefault(Tui::ColorPairs color)
     updateTime();
 }
 
-Frame::Frame(std::string filename, Tui::ColorPairs color)
+DigitalDisplay::DigitalDisplay(std::string filename, Tui::ColorPairs color)
     : mColor(color)
 {
     if (filename.empty())
@@ -102,18 +102,18 @@ Frame::Frame(std::string filename, Tui::ColorPairs color)
     }
 }
 
-void Frame::updateTime()
+void DigitalDisplay::updateTime()
 {
     time_t t = std::time(0);
     mCurrTime = std::localtime(&t);
 }
 
-void Frame::printSeparator()
+void DigitalDisplay::printSeparator()
 {
     Tui::DisplayMessages(mSeparator, 1, 0, mColor);
 }
 
-void Frame::printTime()
+void DigitalDisplay::printTime()
 {
     updateTime();
 
@@ -171,7 +171,7 @@ void Frame::printTime()
     mDigits[mLSB].printDig();
 }
 
-void Frame::printDigits()
+void DigitalDisplay::printDigits()
 {
     for(Digit d: mDigits)
     {

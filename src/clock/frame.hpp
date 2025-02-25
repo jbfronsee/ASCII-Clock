@@ -10,10 +10,9 @@
 /**
  * @author Joshua Fronsee <jbfronsee@gmail.com>
  *
- * Represents the frame of a clock that displays
- * the current time using ncurses and ASCII art.
+ * Represents an ASCII Digital Display.
  */
-class Frame
+class DigitalDisplay
 {
     private:
         static const size_t NUMDIG = 10;
@@ -47,7 +46,7 @@ class Frame
          *
          * @param filename of file to read from
          */
-        Frame(std::string filename = "", Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
+        DigitalDisplay(std::string filename = "", Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
 
         /**
          * Prints the current time of clock frame.

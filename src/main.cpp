@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
     std::chrono::milliseconds prev = now;
 
-    Clock c("", opts.clockColor, opts.digitsColor);
+    Clock c("", opts.clockColor, opts.digitsColor, opts.mode);
     ClockMenu menu(Tui::ColorPairs::MENU);
 
     if(opts.readClock)

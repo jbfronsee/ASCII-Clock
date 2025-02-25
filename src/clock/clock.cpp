@@ -1,4 +1,5 @@
 #include "clock.hpp"
+
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -12,17 +13,46 @@ const std::vector<std::string> Clock::DEFAULT = {
     " \\_______________/ "
 };
 
+const std::vector<std::string> Clock::DEFAULT_ANALOG = {
+       "          ----------------          ",
+       "        /                  \\        ",
+       "       /                    \\      ",
+       "      /                      \\    ",
+       "     |                        |     ",
+       "     |                        |     ",
+       "     |                        |     ",
+       "     |                        |     ",
+       "     |                        |     ",
+       "     |                        |     ",
+       "     |                        |     ",
+       "      \\                      /      ",
+       "       \\                    /       ",
+       "        \\__________________/        ",
+};
+
 void Clock::constructDefault()
 {
-    mHeight = DEFAULT_H;
-    mWidth = DEFAULT_W;
-    mStartY = DEFAULT_YSTART;
-    mStartX = DEFAULT_XSTART;
-    mOuter = DEFAULT;
+    if (mMode == ClockMode::ANALOG)
+    {
+        // TODO make sure no off by one issues
+        mHeight = DEFAULT_ANALOG.size();
+        mWidth = DEFAULT_ANALOG[0].size();
+        mStartY = DEFAULT_YSTART;
+        mStartX = DEFAULT_XSTART;
+        mFrame = DEFAULT_ANALOG;
+    }
+    else
+    {
+        mHeight = DEFAULT_H;
+        mWidth = DEFAULT_W;
+        mStartY = DEFAULT_YSTART;
+        mStartX = DEFAULT_XSTART;
+        mFrame = DEFAULT;
+    }
 }
 
-Clock::Clock(const std::string& filename, Tui::ColorPairs color, Tui::ColorPairs dig_color)
-    : mColor(color), mInner("", dig_color)
+Clock::Clock(const std::string& filename, Tui::ColorPairs color, Tui::ColorPairs dig_color, ClockMode mode)
+    : mColor(color), mDigital("", dig_color), mMode(mode)
 {
     if (filename.empty())
     {
@@ -72,7 +102,7 @@ Clock::Clock(const std::string& filename, Tui::ColorPairs color, Tui::ColorPairs
 
         mHeight = clockframe.size();
 
-        mOuter = clockframe;
+        mFrame = clockframe;
     }
     else
     {
@@ -99,7 +129,7 @@ void Clock::moveFrame(int y, int x)
 
 void Clock::switchFrame(std::string filename, Tui::ColorPairs color)
 {
-    mInner = Frame(filename, color);
+    mDigital = DigitalDisplay(filename, color);
 }
 bool Clock::writeClock()
 {
@@ -111,7 +141,7 @@ bool Clock::writeClock()
         outFile << mStartY << " " << mStartX << std::endl;
         for(size_t i = 0; i < mHeight; i++)
         {
-            outFile << mOuter[i] << std::endl;
+            outFile << mFrame[i] << std::endl;
         }
 
         success = true;
@@ -125,6 +155,6 @@ void Clock::displayClock()
     Tui::Clear();
     // Center the clock in the terminal
     Tui::Move((Tui::Cols() - mWidth)/2, (Tui::Lines() - mHeight)/2);
-    Tui::DisplayMessages(mOuter, mStartX, mStartY, mColor);
-    mInner.printTime();
+    Tui::DisplayMessages(mFrame, mStartX, mStartY, mColor);
+    mDigital.printTime();
 }

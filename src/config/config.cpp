@@ -12,12 +12,13 @@ Config::Opts& Config::SetOpts(const std::map<std::string, std::string> settings,
     // be constructed for std::pair so we can use std::type_index
     std::map<std::string, std::pair<std::any, std::type_index>> setting_map = {
         {"auto_hide", {&opts.autoHide, std::type_index(typeid(opts.autoHide))}},
+        {"clock_color", {&opts.clockColor, std::type_index(typeid(opts.clockColor))}},
+        {"digits_color", {&opts.digitsColor, std::type_index(typeid(opts.digitsColor))}},
+        {"mode", {&opts.mode, std::type_index(typeid(opts.mode))}},
         {"read_clock", {&opts.readClock, std::type_index(typeid(opts.readClock))}},
         {"read_clock_file", {&opts.clockFile, std::type_index(typeid(opts.clockFile))}},
         {"read_digit", {&opts.readDigit, std::type_index(typeid(opts.readDigit))}},
-        {"read_digit_file", {&opts.digitFile, std::type_index(typeid(opts.digitFile))}},
-        {"clock_color", {&opts.clockColor, std::type_index(typeid(opts.clockColor))}},
-        {"digits_color", {&opts.digitsColor, std::type_index(typeid(opts.digitsColor))}}
+        {"read_digit_file", {&opts.digitFile, std::type_index(typeid(opts.digitFile))}}
     };
 
     for (const auto& [setting, value] : settings)
@@ -35,6 +36,15 @@ Config::Opts& Config::SetOpts(const std::map<std::string, std::string> settings,
             {
                 std::string* sField = std::any_cast<std::string*>(field);
                 *sField = value;
+            }
+            else if (type == std::type_index(typeid(ClockMode)))
+            {
+                const std::map<std::string, ClockMode> mapping = {
+                    {"DIGITAL", ClockMode::DIGITAL},
+                    {"ANALOG", ClockMode::ANALOG}
+                };
+                ClockMode* cField = std::any_cast<ClockMode*>(field);
+                *cField = Config::AsEnum<ClockMode>(value, mapping).value_or(ClockMode::DIGITAL);
             }
             else if (type == std::type_index(typeid(Tui::ColorPairs)))
             {

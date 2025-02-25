@@ -10,7 +10,6 @@ int Tui::Input::GetChar()
 
 Tui::ColorPairs Tui::AsColor(const std::string& colorStr)
 {
-    //std::cout << "Color: " << colorStr << std::endl;
     std::map<std::string, Tui::ColorPairs> mapping = {
         { "BLACK", Tui::ColorPairs::BLACK },
         { "RED", Tui::ColorPairs::RED },

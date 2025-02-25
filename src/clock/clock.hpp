@@ -2,8 +2,15 @@
 #define CLOCK_H
 
 #include <string>
+#include "analog/analogDisplay.hpp"
 #include "frame.hpp"
 #include "../tui/tui.hpp"
+
+enum class ClockMode
+{
+    DIGITAL,
+    ANALOG
+};
 
 /**
  * Outer frame of clock.
@@ -13,9 +20,11 @@ class Clock
     private:
         size_t mHeight, mWidth;
         int mStartY, mStartX;
-        std::vector<std::string> mOuter;
+        std::vector<std::string> mFrame;
         Tui::ColorPairs mColor;
-        Frame mInner;
+        DigitalDisplay mDigital;
+        AnalogDisplay mAnalog;
+        ClockMode mMode;
 
         /**
          * Helper function to call default constructor.
@@ -26,6 +35,7 @@ class Clock
         static const size_t DEFAULT_H = 5;
         static const size_t DEFAULT_W = 19;
         static const std::vector<std::string> DEFAULT;
+        static const std::vector<std::string> DEFAULT_ANALOG;
         static const int DEFAULT_YSTART = 1;
         static const int DEFAULT_XSTART = 3;
 
@@ -37,7 +47,8 @@ class Clock
         Clock(
             const std::string& filename = "",
             Tui::ColorPairs color = Tui::ColorPairs::DEFAULT,
-            Tui::ColorPairs dig_color = Tui::ColorPairs::DEFAULT
+            Tui::ColorPairs dig_color = Tui::ColorPairs::DEFAULT,
+            ClockMode mode = ClockMode::DIGITAL
         );
 
         /**

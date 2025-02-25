@@ -3,8 +3,8 @@ CFLAGS = -g -std=c++20 -Wall
 
 LIBS = -lncurses
 
-bin/clock: bin/main.o bin/tui.o bin/config.o bin/clock.o bin/clockMenu.o bin/frame.o bin/digit.o bin/
-	$(CC) -o bin/clock bin/main.o bin/tui.o bin/config.o bin/clock.o bin/clockMenu.o bin/frame.o bin/digit.o $(CFLAGS) $(LIBS)
+bin/clock: bin/main.o bin/tui.o bin/config.o bin/clock.o bin/time.o bin/analogDisplay.o bin/clockMenu.o bin/frame.o bin/digit.o bin/
+	$(CC) -o bin/clock bin/main.o bin/tui.o bin/config.o bin/clock.o bin/time.o bin/analogDisplay.o bin/clockMenu.o bin/frame.o bin/digit.o $(CFLAGS) $(LIBS)
 	rm bin/*.o
 
 bin/main.o: src/main.cpp src/tui/tui.hpp src/config/config.hpp src/clock/clock.hpp src/menu/clockMenu.hpp bin/
@@ -18,6 +18,12 @@ bin/config.o: src/config/config.cpp src/config/config.hpp bin/
 
 bin/clock.o: src/clock/clock.cpp src/clock/clock.hpp bin/
 	$(CC) -c src/clock/clock.cpp -o bin/clock.o $(CFLAGS)
+
+bin/time.o: src/clock/time/time.cpp src/clock/time/time.hpp bin/
+	$(CC) -c src/clock/time/time.cpp -o bin/time.o $(CFLAGS)
+
+bin/analogDisplay.o: src/clock/analog/analogDisplay.cpp src/clock/analog/analogDisplay.hpp bin/
+	$(CC) -c src/clock/analog/analogDisplay.cpp -o bin/analogDisplay.o $(CFLAGS)
 
 bin/clockMenu.o: src/menu/clockMenu.cpp src/menu/clockMenu.hpp bin/
 	$(CC) -c src/menu/clockMenu.cpp -o bin/clockMenu.o $(CFLAGS)
