@@ -15,7 +15,12 @@ class AnalogDisplay
         Tui::ColorPairs mColor;
         std::tm mCurrTime;
 
+        std::pair<int, int> GetHandAdjust(const std::vector<std::string>& hand, const int value, const bool hour = true);
+
     public:
+        static const std::vector<std::vector<std::string>> HOUR_HANDS;
+        static const std::vector<std::vector<std::string>> MINUTE_HANDS;
+
         /**
          * Construct frame with file.
          *

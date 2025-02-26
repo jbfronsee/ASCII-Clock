@@ -34,11 +34,11 @@ void Clock::constructDefault()
 {
     if (mMode == ClockMode::ANALOG)
     {
-        // TODO make sure no off by one issues
+        // TODO make sure no off by one issues or truncation
         mHeight = DEFAULT_ANALOG.size();
         mWidth = DEFAULT_ANALOG[0].size();
-        mStartY = DEFAULT_YSTART;
-        mStartX = DEFAULT_XSTART;
+        mStartY = mHeight / 2;
+        mStartX = mWidth / 2;
         mFrame = DEFAULT_ANALOG;
     }
     else
@@ -52,7 +52,7 @@ void Clock::constructDefault()
 }
 
 Clock::Clock(const std::string& filename, Tui::ColorPairs color, Tui::ColorPairs dig_color, ClockMode mode)
-    : mColor(color), mDigital("", dig_color), mMode(mode)
+    : mColor(color), mDigital("", dig_color), mAnalog("", dig_color), mMode(mode)
 {
     if (filename.empty())
     {
@@ -156,5 +156,12 @@ void Clock::displayClock()
     // Center the clock in the terminal
     Tui::Move((Tui::Cols() - mWidth)/2, (Tui::Lines() - mHeight)/2);
     Tui::DisplayMessages(mFrame, mStartX, mStartY, mColor);
-    mDigital.printTime();
+    if (mMode == ClockMode::ANALOG)
+    {
+        mAnalog.printTime();
+    }
+    else
+    {
+        mDigital.printTime();
+    }
 }

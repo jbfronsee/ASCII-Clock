@@ -30,6 +30,7 @@ int main(int argc, char* argv[])
 
     if(opts.readDigit)
     {
+        //TODO change to display
         c.switchFrame(opts.digitFile, opts.digitsColor);
     }
 
