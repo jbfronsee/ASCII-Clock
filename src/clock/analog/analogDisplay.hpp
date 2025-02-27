@@ -20,6 +20,7 @@ class AnalogDisplay
 {
     private:
         Tui::ColorPairs mColor;
+        Tui::ColorPairs mSecondColor;
         std::tm mCurrTime;
 
         std::pair<int, int> GetHandAdjust(const std::vector<std::string>& hand, int value, const bool hour = true);
@@ -33,7 +34,7 @@ class AnalogDisplay
          *
          * @param filename of file to read from
          */
-        AnalogDisplay(std::string filename = "", Tui::ColorPairs color = Tui::ColorPairs::DEFAULT);
+        AnalogDisplay(std::string filename = "", Tui::ColorPairs color = Tui::ColorPairs::DEFAULT, Tui::ColorPairs secondColor = Tui::ColorPairs::DEFAULT);
 
         /**
          * Prints the current time of clock frame.

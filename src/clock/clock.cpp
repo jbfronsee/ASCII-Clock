@@ -16,7 +16,7 @@ const std::vector<std::string> Clock::DEFAULT = {
 const std::vector<std::string> Clock::DEFAULT_ANALOG = {
        "          ----------------          ",
        "        /        12        \\        ",
-       "       /   11          1    \\      ",
+       "       /   11           1   \\      ",
        "      /                      \\    ",
        "     |  10                 2  |     ",
        "     |                        |     ",
@@ -24,10 +24,11 @@ const std::vector<std::string> Clock::DEFAULT_ANALOG = {
        "     | 9                    3 |     ",
        "     |                        |     ",
        "     |                        |     ",
-       "     |   8                 4  |     ",
+       "     |  8                  4  |     ",
        "      \\                      /      ",
-       "       \\    7         5     /       ",
-       "        \\________6_________/        ",
+       "       \\   7            5   /       ",
+       "        \\         6        /        ",
+       "          ----------------           ",
 };
 
 void Clock::constructDefault()
@@ -52,7 +53,7 @@ void Clock::constructDefault()
 }
 
 Clock::Clock(const std::string& filename, Tui::ColorPairs color, Tui::ColorPairs dig_color, ClockMode mode)
-    : mColor(color), mDigital("", dig_color), mAnalog("", dig_color), mMode(mode)
+    : mColor(color), mDigital("", dig_color), mAnalog("", dig_color, Tui::ColorPairs::CYAN), mMode(mode)
 {
     if (filename.empty())
     {
