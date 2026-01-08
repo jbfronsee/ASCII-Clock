@@ -3,8 +3,8 @@ CFLAGS = -g -std=c++20 -Wall
 
 LIBS = -lncurses
 
-bin/clock: bin/main.o bin/tui.o bin/config.o bin/clock.o bin/clockMenu.o bin/frame.o bin/digit.o bin/
-	$(CC) -o bin/clock bin/main.o bin/tui.o bin/config.o bin/clock.o bin/clockMenu.o bin/frame.o bin/digit.o $(CFLAGS) $(LIBS)
+bin/aaclock: bin/main.o bin/tui.o bin/config.o bin/clock.o bin/clockMenu.o bin/frame.o bin/digit.o bin/
+	$(CC) -o bin/aaclock bin/main.o bin/tui.o bin/config.o bin/clock.o bin/clockMenu.o bin/frame.o bin/digit.o $(CFLAGS) $(LIBS)
 	rm bin/*.o
 
 bin/main.o: src/main.cpp src/tui/tui.hpp src/config/config.hpp src/clock/clock.hpp src/menu/clockMenu.hpp bin/
@@ -32,4 +32,4 @@ bin/:
 	mkdir bin
 
 clean:
-	rm bin/clock
+	rm bin/aaclock
