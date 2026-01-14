@@ -32,7 +32,7 @@ namespace Config
 
     Opts& SetOpts(const std::map<std::string, std::string> settings, Opts& opts);
 
-    Opts& ParseFromFile(Opts& opts, const std::set<std::string>& whichOpts = std::set<std::string>());
+    Opts& ParseFromFile(Opts& opts, std::string directory, const std::set<std::string>& whichOpts = std::set<std::string>());
 
     Opts GetOpts(const std::vector<std::string>& args);
 }

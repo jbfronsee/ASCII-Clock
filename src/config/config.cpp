@@ -47,11 +47,11 @@ Config::Opts& Config::SetOpts(const std::map<std::string, std::string> settings,
     return opts;
 }
 
-Config::Opts& Config::ParseFromFile(Config::Opts& opts, const std::set<std::string>& whichOpts)
+Config::Opts& Config::ParseFromFile(Config::Opts& opts, std::string directory, const std::set<std::string>& whichOpts)
 {
     std::map<std::string, std::string> settings;
 
-    std::ifstream inFile("clock.conf");
+    std::ifstream inFile(directory + "clock.conf");
     if(inFile.is_open())
     {
         std::string line;
@@ -75,7 +75,17 @@ Config::Opts& Config::ParseFromFile(Config::Opts& opts, const std::set<std::stri
 
 Config::Opts Config::GetOpts(const std::vector<std::string>& args)
 {
+    std::string directory = "";
+    if (args.size() > 2)
+    {
+        std::string flag = args[1];
+        if (flag == "--config")
+        {
+            directory = args[2];
+        }
+    }
+
     Opts result;
-    result = ParseFromFile(result);
+    result = ParseFromFile(result, directory);
     return result;
 }
